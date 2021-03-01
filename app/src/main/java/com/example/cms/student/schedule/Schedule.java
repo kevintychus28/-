@@ -8,13 +8,14 @@ import android.widget.GridView;
 
 import com.example.cms.R;
 
-import java.util.LinkedList;
 import java.util.List;
 
 public class Schedule extends AppCompatActivity {
 
     private GridView courceDetail;
-    LinkedList<Cource> mData;
+    private List<Cource> courceList;
+    private MyAdapter myAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +24,9 @@ public class Schedule extends AppCompatActivity {
 
         courceDetail = (GridView)findViewById(R.id.courceDetail);
 
-        mData.add(new Cource("大学语文", "一教108", "陈先生"));
+        courceList.add(new Cource("大学语文", "一教108", "陈先生"));
 
-        mData = new LinkedList<Cource>();
-        MyAdapter myAdapter = new MyAdapter(mData, Schedule.this);
+        myAdapter = new MyAdapter(courceList, Schedule.this);
         courceDetail.setAdapter(myAdapter);
     }
 }
