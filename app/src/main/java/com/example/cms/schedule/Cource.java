@@ -1,4 +1,4 @@
-package com.example.cms.student.schedule;
+package com.example.cms.schedule;
 
 public class Cource {
     private String cName;
@@ -8,7 +8,7 @@ public class Cource {
     public Cource() {
     }
 
-    public Cource(String cName, String cClassroom, String cTeacher){
+    public Cource(String cName, String cClassroom) {
         this.cName = cName;
         this.cClassroom = cClassroom;
         this.cTeacher = cTeacher;
