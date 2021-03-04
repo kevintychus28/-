@@ -1,4 +1,4 @@
-package com.example.cms.score;
+package com.example.cms.scorereport;
 
 import android.content.Context;
 import android.view.View;

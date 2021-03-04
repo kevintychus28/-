@@ -1,189 +1,138 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F7F7">
+    android:background="#F7F7F7"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="160dp"
-        android:text="课程管理系统"
-        android:textColor="#000"
-        android:textSize="23sp"
-        android:typeface="monospace" />
+    <FrameLayout
+        android:id="@+id/main_body"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-    <RelativeLayout
-        android:id="@+id/rl_select"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_title"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="@drawable/background_gradient_from_bottom_to_top" />
 
-        <RadioGroup
-            android:id="@+id/rd_select"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@null"
-            app:buttonTint="#004684">
-            <RadioButton
-                android:id="@+id/student"
-                android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#004684"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/bottom_bar_1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/bottom_bar_1_image"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:src="@mipmap/ic_menu_today" />
+
+            <TextView
+                android:id="@+id/bottom_bar_1_text"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="学生端"
-                android:textSize="10sp"
-                android:checked="true"
-                style="@style/select_flex_style"/>
-            <RadioButton
-                android:id="@+id/teacher"
-                android:layout_width="wrap_content"
+                android:layout_below="@+id/bottom_bar_1_image"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="课程表"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/bottom_bar_2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/bottom_bar_2_image"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:src="@mipmap/ic_menu_find" />
+
+            <TextView
+                android:id="@+id/bottom_bar_2_text"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="教师端"
-                android:textSize="10sp"
-                style="@style/select_flex_style"/>
-        </RadioGroup>
+                android:layout_below="@+id/bottom_bar_2_image"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="成绩"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
+        </RelativeLayout>
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/bottom_bar_3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-    <RelativeLayout
-        android:id="@+id/rl_userName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rl_select"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/login_edittext">
+            <ImageView
+                android:id="@+id/bottom_bar_3_image"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:src="@mipmap/ic_menu_delete" />
 
-        <ImageView
-            android:id="@+id/iv_userIconName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:paddingBottom="15dp"
-            android:paddingLeft="30dp"
-            android:paddingTop="15dp"
-            android:src="@mipmap/ic_edittextuname" />
+            <TextView
+                android:id="@+id/bottom_bar_3_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bottom_bar_3_image"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="笔记"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
+        </RelativeLayout>
 
-        <View
-            android:id="@+id/viewName"
-            android:layout_width="1dip"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/iv_userIconName"
-            android:background="#cccccc" />
+        <RelativeLayout
+            android:id="@+id/bottom_bar_4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-        <EditText
-            android:id="@+id/et_userName"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/viewName"
-            android:background="@null"
-            android:ems="19"
-            android:hint="  用户名"
-            android:textColorHint="#cccccc"
-            android:textSize="15sp" />
+            <ImageView
+                android:id="@+id/bottom_bar_4_image"
+                android:layout_width="27dp"
+                android:layout_height="27dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:src="@mipmap/ic_menu_myplaces" />
 
-        <ImageView
-            android:id="@+id/iv_unameClear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:src="@mipmap/ic_backspace_grey600_24dp"
-            android:visibility="invisible" />
+            <TextView
+                android:id="@+id/bottom_bar_4_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bottom_bar_4_image"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="我"
+                android:textColor="#ffffff"
+                android:textSize="14sp" />
+        </RelativeLayout>
+    </LinearLayout>
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_userPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rl_userName"
-        android:layout_marginTop="1dp"
-        android:background="@drawable/login_edittext">
-
-        <ImageView
-            android:id="@+id/iv_userIconPwd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:paddingBottom="15dp"
-            android:paddingLeft="30dp"
-            android:paddingTop="15dp"
-            android:src="@mipmap/ic_edittextupwd" />
-
-        <View
-            android:id="@+id/viewPwd"
-            android:layout_width="1dip"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/iv_userIconPwd"
-            android:background="#cccccc" />
-
-        <EditText
-            android:id="@+id/et_password"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_toRightOf="@id/viewPwd"
-            android:background="@null"
-            android:drawablePadding="5dp"
-            android:ems="19"
-            android:hint="  密码"
-            android:inputType="textPassword"
-            android:textColorHint="#cccccc"
-            android:textSize="15sp" />
-
-        <ImageView
-            android:id="@+id/iv_pwdClear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
-            android:src="@mipmap/ic_backspace_grey600_24dp"
-            android:visibility="invisible" />
-
-    </RelativeLayout>
-
-    <CheckBox
-        android:id="@+id/cb_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/rl_userPassword"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@null"
-        android:checked="false"
-        android:duplicateParentState="false"
-        android:text="记住密码"
-        android:textColor="#666666"
-        android:textSize="15sp"
-        app:buttonTint="#004684" />
-
-    <Button
-        android:id="@+id/btn_login"
-        android:layout_width="340dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cb_checkbox"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/login_btn"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="登录"
-        android:textColor="#fff"
-        android:textSize="18sp" />
-
-</RelativeLayout>
+</LinearLayout>

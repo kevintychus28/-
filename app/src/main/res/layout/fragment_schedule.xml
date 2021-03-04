@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--模仿课程表的界面-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_schedule"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,7 +10,7 @@
     <!--选择时间-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="30dp">
         <!--下拉方式选学年-->
         <Spinner
             android:id="@+id/switchYear"
@@ -48,7 +49,7 @@
         <Spinner
             android:id="@+id/switchWeek"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center" />
@@ -57,8 +58,8 @@
     <!--分隔线-->
     <View
         android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:background="#004684" />
+        android:layout_height="12dp"
+        android:background="@drawable/background_gradient_from_top_to_bottom" />
 
     <!--显示星期-->
     <LinearLayout

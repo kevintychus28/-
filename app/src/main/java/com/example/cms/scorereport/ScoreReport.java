@@ -1,14 +1,11 @@
-package com.example.cms.score;
+package com.example.cms.scorereport;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.GridView;
 import android.widget.ListView;
 
 import com.example.cms.R;
-import com.example.cms.schedule.Cource;
-import com.example.cms.schedule.GridAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +20,7 @@ public class ScoreReport extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_score_report);
+        setContentView(R.layout.fragment_score_report);
 
         scoreDetail = findViewById(R.id.scoreDetail);
 
