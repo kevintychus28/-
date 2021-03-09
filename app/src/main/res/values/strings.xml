@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CMS</string>
+    <string name="app_name">课程管理系统</string>
     <string name="第一节">08:00  — 09:40 </string>
     <string name="第二节">10:00  — 11:40 </string>
     <string name="第三节">14:10  — 15:50 </string>
