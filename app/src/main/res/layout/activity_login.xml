@@ -179,6 +179,7 @@
         android:layout_below="@id/cb_checkbox"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
+        android:onClick="onClick"
         android:background="@drawable/login_btn"
         android:gravity="center"
         android:padding="10dp"
