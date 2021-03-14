@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.example.cms.user.Student;
 import com.example.cms.user.Teacher;
@@ -32,20 +31,20 @@ import java.util.List;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    String username, password;
+    String userID, password;
 
     Student stu;
     Teacher tec;
 
     private RadioButton student;
     private RadioButton teacher;
-    private EditText et_userName;
+    private EditText et_userID;
     private EditText et_password;
     private CheckBox cb_checkbox;
     private Button btn_login;
 
 
-    private String url = "http://10.0.2.2:8080/CourseManagementSystem%20Server/LoginServlet";//服务器接口地址
+    private String url = "http://10.0.2.2:8080/LoginServlet";//服务器接口地址
 
     private static final String TAG = "LoginActivity";
 
@@ -61,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //实例化控件
         student = findViewById(R.id.student);
         teacher = findViewById(R.id.teacher);
-        et_userName = findViewById(R.id.et_userName);
+        et_userID = findViewById(R.id.et_userID);
         et_password = findViewById(R.id.et_password);
         cb_checkbox = findViewById(R.id.cb_checkbox);
         btn_login = findViewById(R.id.btn_login);
@@ -79,14 +78,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 new Thread() {
                     public void run() {
                         Log.d(TAG, "run: 开启线程");
-                        username = et_userName.getText().toString().trim();
+                        userID = et_userID.getText().toString().trim();
                         password = et_password.getText().toString().trim();
                         //保存账号密码
                         if (cb_checkbox.isClickable()) {
                         }
-                        stu = new Student(username, password);
-//                        checkStuLogin(stu);
-                        NameValuePair pair1 = new BasicNameValuePair("username", username);
+                        stu = new Student(userID, password);
+                        NameValuePair pair1 = new BasicNameValuePair("userID", userID);
                         NameValuePair pair2 = new BasicNameValuePair("password", password);
                         List<NameValuePair> pairList = new ArrayList<NameValuePair>();
                         pairList.add(pair1);
@@ -128,22 +126,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         while (null != (line = reader.readLine())) {
             result += line;
         }
+        Log.d(TAG, result);
         if (result.equals("success")) {
             return true;
         }
         return false;
     }
 
-
-//    private void checkStuLogin(Student stu) {
-//        if (stu.getStu_id().equals("17251102126") && stu.getStu_password().equals("123456")) {
-//            Intent i = new Intent(LoginActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//            startActivity(i);
-//        } else {
-//            Toast toast = Toast.makeText(this, "账号或密码错误", Toast.LENGTH_SHORT);
-//            toast.show();
-//        }
-//    }
 
 
 }

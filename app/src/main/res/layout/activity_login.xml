@@ -79,7 +79,7 @@
             android:background="#cccccc" />
 
         <EditText
-            android:id="@+id/et_userName"
+            android:id="@+id/et_userID"
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
