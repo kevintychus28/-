@@ -1,4 +1,4 @@
-package com.example.cms.schedule;
+package com.example.cms.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;

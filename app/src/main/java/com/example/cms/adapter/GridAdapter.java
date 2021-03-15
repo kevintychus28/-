@@ -1,4 +1,4 @@
-package com.example.cms.schedule;
+package com.example.cms.adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.cms.R;
+import com.example.cms.entity.Cource;
 
 import java.util.List;
 

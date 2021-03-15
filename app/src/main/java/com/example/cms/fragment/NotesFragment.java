@@ -1,4 +1,4 @@
-package com.example.cms.homepage;
+package com.example.cms.fragment;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -8,14 +8,14 @@ import android.view.ViewGroup;
 
 import com.example.cms.R;
 
-public class HomePageFragment extends Fragment {
+public class NotesFragment extends Fragment {
 
-    public HomePageFragment() {
+    public NotesFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_homepage,container,false);
+        View view = inflater.inflate(R.layout.fragment_notes,container,false);
         return view;
     }
 }

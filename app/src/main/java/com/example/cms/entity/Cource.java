@@ -1,4 +1,4 @@
-package com.example.cms.schedule;
+package com.example.cms.entity;
 
 public class Cource {
     private String cName;

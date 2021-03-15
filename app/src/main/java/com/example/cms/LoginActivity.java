@@ -4,30 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
-import com.example.cms.user.Student;
-import com.example.cms.user.Teacher;
+import com.example.cms.entity.Student;
+import com.example.cms.entity.Teacher;
+import com.example.cms.service.LoginService;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -42,9 +31,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText et_password;
     private CheckBox cb_checkbox;
     private Button btn_login;
-
-
-    private String url = "http://10.0.2.2:8080/LoginServlet";//服务器接口地址
 
     private static final String TAG = "LoginActivity";
 
@@ -80,59 +66,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Log.d(TAG, "run: 开启线程");
                         userID = et_userID.getText().toString().trim();
                         password = et_password.getText().toString().trim();
-                        //保存账号密码
-                        if (cb_checkbox.isClickable()) {
+                        //发送登录请求
+                        LoginService loginService = new LoginService();
+                        if (loginService.LoginService(userID, password)) {
+                            Intent i = new Intent();
+                            i.putExtra("userID",userID);
+                            i.setClass(LoginActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                            startActivity(i);
+                        } else {
+                            Looper.prepare();
+                            Toast toast = Toast.makeText(getApplicationContext(), "账号或密码错误，请重试", Toast.LENGTH_LONG);
+                            toast.show();
+                            Looper.loop();
                         }
-                        stu = new Student(userID, password);
-                        NameValuePair pair1 = new BasicNameValuePair("userID", userID);
-                        NameValuePair pair2 = new BasicNameValuePair("password", password);
-                        List<NameValuePair> pairList = new ArrayList<NameValuePair>();
-                        pairList.add(pair1);
-                        pairList.add(pair2);
-                        try {
-                            HttpEntity requestHttpEntity = new UrlEncodedFormEntity(pairList);
-                            // URl是接口地址
-                            HttpPost httpPost = new HttpPost(url);
-                            // 将请求体内容加入请求中
-                            httpPost.setEntity(requestHttpEntity);
-                            // 需要客户端对象来发送请求
-                            HttpClient httpClient = new DefaultHttpClient();
-                            // 发送请求
-                            HttpResponse response = httpClient.execute(httpPost);
-                            Log.d(TAG, "发送请求");
-                            // 显示响应
-                            if (getInfo(response)) {
-                                Intent i = new Intent(LoginActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(i);
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
                     }
                 }.start();
                 break;
         }
     }
-
-    // 收取数据
-    private static boolean getInfo(HttpResponse response) throws Exception {
-        Log.d(TAG, "getInfo: 接受响应");
-        HttpEntity httpEntity = response.getEntity();
-        InputStream inputStream = httpEntity.getContent();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        String result = "";
-        String line = "";
-        while (null != (line = reader.readLine())) {
-            result += line;
-        }
-        Log.d(TAG, result);
-        if (result.equals("success")) {
-            return true;
-        }
-        return false;
-    }
-
 
 
 }

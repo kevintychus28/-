@@ -1,4 +1,4 @@
-package com.example.cms.scorereport;
+package com.example.cms;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import com.example.cms.R;
+import com.example.cms.adapter.ListAdapter;
+import com.example.cms.entity.Score;
 
 import java.util.ArrayList;
 import java.util.List;

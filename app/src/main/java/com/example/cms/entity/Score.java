@@ -1,4 +1,4 @@
-package com.example.cms.scorereport;
+package com.example.cms.entity;
 
 public class Score {
     private String cName;

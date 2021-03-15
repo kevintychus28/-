@@ -5,14 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".schedule.Schedule">
+    tools:context=".Schedule">
 
     <!--选择时间-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="30dp">
-        <!--下拉方式选学年-->
-        <Spinner
+        <View
             android:id="@+id/switchYear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +27,8 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="2dp"
             android:background="#004684" />
-        <!--下拉方式选学期-->
+
+        <!--下拉方式选周数-->
         <Spinner
             android:id="@+id/switchTerm"
             android:layout_width="match_parent"
@@ -45,8 +45,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginBottom="2dp"
             android:background="#004684" />
-        <!--下拉方式选周数-->
-        <Spinner
+        <View
             android:id="@+id/switchWeek"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -193,15 +192,63 @@
             </LinearLayout>
 
 
-            <GridView
-                android:id="@+id/courceDetail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:horizontalSpacing="1dp"
-                android:numColumns="7"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="1dp"></GridView>
+<!--            <GridView-->
+<!--                android:id="@+id/courceDetail"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:horizontalSpacing="1dp"-->
+<!--                android:numColumns="7"-->
+<!--                android:stretchMode="columnWidth"-->
+<!--                android:verticalSpacing="1dp"></GridView>-->
 
+            <LinearLayout
+                android:id="@+id/linearLayout1"
+                android:orientation="vertical"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:orientation="vertical"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:orientation="vertical"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                android:orientation="vertical"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout5"
+                android:orientation="vertical"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout6"
+                android:orientation="vertical"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout7"
+                android:orientation="vertical"
+                android:layout_width="0dip"
+                android:layout_weight="1"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
     </ScrollView>

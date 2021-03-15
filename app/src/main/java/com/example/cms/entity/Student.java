@@ -1,4 +1,4 @@
-package com.example.cms.user;
+package com.example.cms.entity;
 
 public class Student {
     private String stu_id;

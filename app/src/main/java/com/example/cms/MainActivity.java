@@ -4,21 +4,27 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.example.cms.homepage.HomePageFragment;
-import com.example.cms.notes.NotesFragment;
-import com.example.cms.schedule.ScheduleFragment;
-import com.example.cms.scorereport.ScoreFragment;
+import com.example.cms.fragment.HomePageFragment;
+import com.example.cms.fragment.NotesFragment;
+import com.example.cms.fragment.ScheduleFragment;
+import com.example.cms.fragment.ScoreFragment;
+import com.example.cms.service.ScheduleService;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = "MainActivity";
+
     private LinearLayout fragment_schedule;
     private LinearLayout fragment_score_report;
+    private LinearLayout fragment_notes;
     private LinearLayout fragment_homepage;
 
     private FrameLayout main_body;
@@ -39,10 +45,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //初始化视图
         initView();
+        //加载课程表
         fManager = getFragmentManager();
         setFragments(bottom_bar_1);
-
+        String userID = getIntent().getStringExtra("userID");
+        Log.d(TAG, "userID为：" + userID);
+        new Thread() {
+            public void run() {
+                ScheduleService scheduleService = new ScheduleService();
+                scheduleService.getSchedule(userID);
+            }
+        }.start();
     }
 
     //实例化
@@ -50,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //四大功能页面
         fragment_schedule = findViewById(R.id.fragment_schedule);
         fragment_score_report = findViewById(R.id.fragment_score_report);
+        fragment_notes = findViewById(R.id.fragment_notes);
         fragment_homepage = findViewById(R.id.fragment_homepage);
         //fragment页面
         main_body = findViewById(R.id.main_body);
@@ -138,4 +154,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fTransaction.hide(fragment_4);
         }
     }
+
 }
