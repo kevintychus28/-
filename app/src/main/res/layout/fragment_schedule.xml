@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?><!--模仿课程表的界面-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_schedule"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Schedule">
+    android:orientation="vertical">
 
     <!--选择时间-->
     <LinearLayout
@@ -145,47 +143,48 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="90dp"
+                    android:layout_height="@dimen/weekItemHeight"
+                    android:layout_marginTop="@dimen/weekItemMarTop"
                     android:gravity="center"
                     android:text="@string/第一节"
                     android:textSize="10dp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#FAFAFA" />
-
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="92dp"
+                    android:layout_height="@dimen/weekItemHeight"
+                    android:layout_marginTop="@dimen/weekItemMarTop"
                     android:gravity="center"
                     android:text="@string/第二节"
                     android:textSize="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="92dp"
+                    android:layout_height="@dimen/weekItemHeight"
+                    android:layout_marginTop="@dimen/weekItemMarTop"
                     android:gravity="center"
                     android:text="@string/第三节"
                     android:textSize="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="92dp"
+                    android:layout_height="@dimen/weekItemHeight"
+                    android:layout_marginTop="@dimen/weekItemMarTop"
                     android:gravity="center"
                     android:text="@string/第四节"
                     android:textSize="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="92dp"
+                    android:layout_height="@dimen/weekItemHeight"
+                    android:layout_marginTop="@dimen/weekItemMarTop"
                     android:gravity="center"
                     android:text="@string/第五节"
                     android:textSize="10dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="92dp"
+                    android:layout_height="@dimen/weekItemHeight"
+                    android:layout_marginTop="@dimen/weekItemMarTop"
                     android:gravity="center"
                     android:text="@string/第六节"
                     android:textSize="10dp" />
@@ -202,49 +201,49 @@
 <!--                android:verticalSpacing="1dp"></GridView>-->
 
             <LinearLayout
-                android:id="@+id/linearLayout1"
+                android:id="@+id/weekPanel_1"
                 android:orientation="vertical"
                 android:layout_width="0dip"
                 android:layout_weight="1"
                 android:layout_height="match_parent" />
 
             <LinearLayout
-                android:id="@+id/linearLayout2"
+                android:id="@+id/weekPanel_2"
                 android:orientation="vertical"
                 android:layout_width="0dip"
                 android:layout_weight="1"
                 android:layout_height="match_parent" />
 
             <LinearLayout
-                android:id="@+id/linearLayout3"
+                android:id="@+id/weekPanel_3"
                 android:orientation="vertical"
                 android:layout_width="0dip"
                 android:layout_weight="1"
                 android:layout_height="match_parent" />
 
             <LinearLayout
-                android:id="@+id/linearLayout4"
+                android:id="@+id/weekPanel_4"
                 android:orientation="vertical"
                 android:layout_width="0dip"
                 android:layout_weight="1"
                 android:layout_height="match_parent" />
 
             <LinearLayout
-                android:id="@+id/linearLayout5"
+                android:id="@+id/weekPanel_5"
                 android:orientation="vertical"
                 android:layout_width="0dip"
                 android:layout_weight="1"
                 android:layout_height="match_parent" />
 
             <LinearLayout
-                android:id="@+id/linearLayout6"
+                android:id="@+id/weekPanel_6"
                 android:orientation="vertical"
                 android:layout_width="0dip"
                 android:layout_weight="1"
                 android:layout_height="match_parent" />
 
             <LinearLayout
-                android:id="@+id/linearLayout7"
+                android:id="@+id/weekPanel_7"
                 android:orientation="vertical"
                 android:layout_width="0dip"
                 android:layout_weight="1"

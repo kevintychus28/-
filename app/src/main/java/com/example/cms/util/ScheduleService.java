@@ -1,9 +1,9 @@
-package com.example.cms.service;
+package com.example.cms.util;
 
 import android.util.Log;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
+import com.example.cms.entity.Cource;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -14,10 +14,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ScheduleService {
 
@@ -28,14 +25,14 @@ public class ScheduleService {
     public ScheduleService() {
     }
 
-    public void getSchedule(String userID) {
+    public String getSchedule(String userID) {
         try {
             Log.d(TAG, "发送请求");
             // 创建请求方法的实例，并指定请求URL
             HttpGet httpGet = new HttpGet(url + "?userID=" + userID);
             // 创建HttpClient对象
             HttpClient httpClient = new DefaultHttpClient();
-            // 客户端调用execute方法，使用POST方式执行请求，获得服务器端的回应response
+            // 客户端调用execute方法，使用Get方式执行请求，获得服务器端的回应response
             HttpResponse response = httpClient.execute(httpGet);
             Log.d(TAG, "接收响应");
             // 检查状态码
@@ -50,26 +47,14 @@ public class ScheduleService {
                 while (null != (temp = reader.readLine())) {
                     sb.append(temp);
                 }
-                Log.d(TAG, sb.toString());
-
-
-                JSONArray jsonArray = new JSONArray(sb);
-                List<Map<String, Object>> scheduleList = new ArrayList<Map<String, Object>>();
-                for (int i = 0; i < jsonArray.size(); i++) {
-                    Map<String, Object> map = new HashMap<String, Object>();
-                    JSONObject jObj = jsonArray.getJSONObject(i);
-                    map.put("Cou_name", jObj.getString("Cou_name"));
-                    map.put("Cou_teacher", jObj.getString("Cou_teacher"));
-                    map.put("Cou_classroom", jObj.getString("Cou_classroom"));
-                    map.put("Cou_weekday", jObj.getString("Cou_weekday"));
-                    map.put("Cou_period", jObj.getString("Cou_period"));
-                    scheduleList.add(map);
-                }
-                System.out.println(scheduleList);
+                // 把响应内容json格式数据转换为字符串
+                String json = sb.toString();
+                return json;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
 }

@@ -7,17 +7,17 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.cms.R;
-import com.example.cms.entity.Score;
+import com.example.cms.entity.Cource;
 
 import java.util.List;
 
 
-public class ListAdapter extends BaseAdapter {
+public class ScoreListAdapter extends BaseAdapter {
 
-    private List<Score> scoreList;
+    private List<Cource> scoreList;
     private Context context;
 
-    public ListAdapter(Context context, List<Score> list) {
+    public ScoreListAdapter(Context context, List<Cource> list) {
         this.context = context;
         this.scoreList = list;
     }
@@ -48,7 +48,7 @@ public class ListAdapter extends BaseAdapter {
             holder = new ListViewHolder();
             // 找控件
             holder.cName = (TextView) convertView.findViewById(R.id.item_Name);
-            holder.cScore = (TextView) convertView.findViewById(R.id.item_Score);
+            holder.cGrade = (TextView) convertView.findViewById(R.id.item_Grade);
             // 保存holder对象
             convertView.setTag(holder);
         } else {
@@ -56,11 +56,11 @@ public class ListAdapter extends BaseAdapter {
         }
 
         // 首先得到我们想要的对象
-        Score score = scoreList.get(position);
+        Cource cource = scoreList.get(position);
 
         // 设置内容
-        holder.cName.setText(score.getcName());
-        holder.cScore.setText(score.getcScore());
+        holder.cName.setText(cource.getCou_name());
+        holder.cGrade.setText(cource.getGrade());
         return convertView;
     }
 
@@ -68,5 +68,5 @@ public class ListAdapter extends BaseAdapter {
 
 class ListViewHolder {
     TextView cName;
-    TextView cScore;
+    TextView cGrade;
 }

@@ -59,8 +59,8 @@ public class GridAdapter extends BaseAdapter {
         Cource cource = courceList.get(position);
 
         // 设置内容
-        holder.cName.setText(cource.getcName());
-        holder.cClassroom.setText(cource.getcClassroom());
+        holder.cName.setText(cource.getCou_name());
+        holder.cClassroom.setText(cource.getCou_classroom());
         return convertView;
     }
 

@@ -1,40 +1,73 @@
 package com.example.cms.entity;
 
 public class Cource {
-    private String cName;
-    private String cClassroom;
-    private String cTeacher;
+    private String Cou_name;
+    private String Cou_teacher;
+    private String Cou_classroom;
+    private String Cou_weekday;
+    private String Cou_period;
+    private String grade;
 
     public Cource() {
     }
 
-    public Cource(String cName, String cClassroom) {
-        this.cName = cName;
-        this.cClassroom = cClassroom;
-        this.cTeacher = cTeacher;
+    public String getCou_name() {
+        return Cou_name;
     }
 
-    public String getcName() {
-        return cName;
+    public void setCou_name(String cou_name) {
+        Cou_name = cou_name;
     }
 
-    public void setcName(String cName) {
-        this.cName = cName;
+    public String getCou_teacher() {
+        return Cou_teacher;
     }
 
-    public String getcClassroom() {
-        return cClassroom;
+    public void setCou_teacher(String cou_teacher) {
+        Cou_teacher = cou_teacher;
     }
 
-    public void setcClassroom(String cClassroom) {
-        this.cClassroom = cClassroom;
+    public String getCou_classroom() {
+        return Cou_classroom;
     }
 
-    public String getcTeacher() {
-        return cTeacher;
+    public void setCou_classroom(String cou_classroom) {
+        Cou_classroom = cou_classroom;
     }
 
-    public void setcTeacher(String cTeacher) {
-        this.cTeacher = cTeacher;
+    public String getCou_weekday() {
+        return Cou_weekday;
+    }
+
+    public void setCou_weekday(String cou_weekday) {
+        Cou_weekday = cou_weekday;
+    }
+
+    public String getCou_period() {
+        return Cou_period;
+    }
+
+    public void setCou_period(String cou_period) {
+        Cou_period = cou_period;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    @Override
+    public String toString() {
+        return "Cource{" +
+                "Cou_name='" + Cou_name + '\'' +
+                ", Cou_teacher='" + Cou_teacher + '\'' +
+                ", Cou_classroom='" + Cou_classroom + '\'' +
+                ", Cou_weekday='" + Cou_weekday + '\'' +
+                ", Cou_period='" + Cou_period + '\'' +
+                ", grade='" + grade + '\'' +
+                '}';
     }
 }

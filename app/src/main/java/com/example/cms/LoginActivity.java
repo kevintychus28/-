@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import com.example.cms.entity.Student;
 import com.example.cms.entity.Teacher;
-import com.example.cms.service.LoginService;
+import com.example.cms.util.LoginService;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
