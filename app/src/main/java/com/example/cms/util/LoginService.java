@@ -21,7 +21,7 @@ import java.util.List;
 
 public class LoginService {
 
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "Log日志";
 
     private String url = "http://10.0.2.2:8080/LoginServlet";//服务器接口地址
 
@@ -47,7 +47,9 @@ public class LoginService {
             // 检查状态码
             if (response.getStatusLine().getStatusCode() == 200) {
                 // 查看响应结果
-                if (getInfo(response)) {
+                Boolean checkLogin = getInfo(response);
+                Log.d(TAG,  String.valueOf(checkLogin));
+                if (checkLogin) {
                     return true;
                 }
             }

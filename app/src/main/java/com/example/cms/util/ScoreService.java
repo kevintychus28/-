@@ -13,7 +13,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 public class ScoreService {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "Log日志";
 
     private String url = "http://10.0.2.2:8080/ScoreServlet";//服务器接口地址
 

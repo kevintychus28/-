@@ -7,7 +7,7 @@
     android:background="#F4FFF5EE">
 
     <TextView
-        android:id="@+id/itemName"
+        android:id="@+id/item_Title"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginLeft="3dp"
@@ -16,12 +16,12 @@
         android:layout_marginBottom="2dp"
         android:padding="2dp"
         android:textSize="10dp"
-        android:text="课程名字"
+        android:text="笔记标题"
         android:textColor="@color/black"
         android:gravity="center"/>
 
     <TextView
-        android:id="@+id/itemClassroom"
+        android:id="@+id/item_Content"
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:layout_marginLeft="3dp"

@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ScheduleService {
 
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "Log日志";
 
     private String url = "http://10.0.2.2:8080/ScheduleServlet";//服务器接口地址
 

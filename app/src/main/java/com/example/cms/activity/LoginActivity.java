@@ -1,4 +1,4 @@
-package com.example.cms;
+package com.example.cms.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.example.cms.R;
 import com.example.cms.entity.Student;
 import com.example.cms.entity.Teacher;
 import com.example.cms.util.LoginService;
@@ -32,7 +33,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CheckBox cb_checkbox;
     private Button btn_login;
 
-    private static final String TAG = "LoginActivity";
+    private static final String TAG = "Log日志";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

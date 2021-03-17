@@ -8,28 +8,29 @@ import android.widget.TextView;
 
 import com.example.cms.R;
 import com.example.cms.entity.Cource;
+import com.example.cms.entity.Note;
 
 import java.util.List;
 
 
-public class GridAdapter extends BaseAdapter {
+public class NoteListAdapter extends BaseAdapter {
 
-    private List<Cource> courceList;
+    private List<Note> noteList;
     private Context context;
 
-    public GridAdapter(Context context, List<Cource> list) {
+    public NoteListAdapter(Context context, List<Note> noteList) {
         this.context = context;
-        this.courceList = list;
+        this.noteList = noteList;
     }
 
     @Override
     public int getCount() {
-        return courceList.size();
+        return noteList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return courceList.get(position);
+        return noteList.get(position);
     }
 
     @Override
@@ -40,33 +41,35 @@ public class GridAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        GridViewHolder holder = null;
+        ListViewHolder holder = null;
         if (convertView == null) {
             // 设置视图(创建一个laylout的xml)
-            convertView = View.inflate(context,R.layout.cource_item_layout,null);
+            convertView = View.inflate(context, R.layout.item_note, null);
             // 创建对象(里面是我们要得到里面的属性)
-            holder = new GridViewHolder();
+            holder = new ListViewHolder();
             // 找控件
-            holder.cName = (TextView) convertView.findViewById(R.id.itemName);
-            holder.cClassroom = (TextView) convertView.findViewById(R.id.itemClassroom);
+            holder.nTitle = (TextView) convertView.findViewById(R.id.item_Title);
+            holder.nContent = (TextView) convertView.findViewById(R.id.item_Content);
             // 保存holder对象
             convertView.setTag(holder);
         } else {
-            holder = (GridViewHolder) convertView.getTag();
+            holder = (ListViewHolder) convertView.getTag();
         }
 
         // 首先得到我们想要的对象
-        Cource cource = courceList.get(position);
+        Note note = noteList.get(position);
 
         // 设置内容
-        holder.cName.setText(cource.getCou_name());
-        holder.cClassroom.setText(cource.getCou_classroom());
+        holder.nTitle.setText(note.getTitle());
+        holder.nContent.setText(note.getContent());
         return convertView;
+    }
+
+    class ListViewHolder {
+        TextView nTitle;
+        TextView nContent;
     }
 
 }
 
-class GridViewHolder {
-    TextView cName;
-    TextView cClassroom;
-}
+

@@ -4,8 +4,8 @@
     android:id="@+id/fragment_notes"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F7F7F7">
+    android:background="#F7F7F7"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -13,36 +13,36 @@
         android:background="#004684">
 
         <ImageView
-            android:id="@+id/deletenotes"
+            android:id="@+id/iv_deleteNote"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:src="@mipmap/delete"/>
+            android:src="@mipmap/delete" />
+
         <ImageView
-            android:id="@+id/addnotes"
+            android:id="@+id/iv_addNote"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
-            android:src="@mipmap/add"/>
+            android:src="@mipmap/add" />
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="10dp"
-        android:background="@drawable/background_gradient_from_top_to_bottom"/>
+        android:background="@drawable/background_gradient_from_top_to_bottom" />
 
-    <ScrollView
+
+    <ListView
+        android:id="@+id/notesDetail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <ListView
-            android:id="@+id/notesDetail"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </ScrollView>
+        android:layout_height="match_parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" />
 
 
 </LinearLayout>

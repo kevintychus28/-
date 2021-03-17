@@ -43,7 +43,7 @@ public class ScoreListAdapter extends BaseAdapter {
         ListViewHolder holder = null;
         if (convertView == null) {
             // 设置视图(创建一个laylout的xml)
-            convertView = View.inflate(context,R.layout.score_item_layout,null);
+            convertView = View.inflate(context, R.layout.item_score, null);
             // 创建对象(里面是我们要得到里面的属性)
             holder = new ListViewHolder();
             // 找控件
@@ -64,9 +64,10 @@ public class ScoreListAdapter extends BaseAdapter {
         return convertView;
     }
 
+    class ListViewHolder {
+        TextView cName;
+        TextView cGrade;
+    }
 }
 
-class ListViewHolder {
-    TextView cName;
-    TextView cGrade;
-}
+

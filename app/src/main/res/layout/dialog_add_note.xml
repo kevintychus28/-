@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_addTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_select"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/login_btn">
+
+        <ImageView
+            android:id="@+id/iv_addTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="30dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:src="@android:drawable/stat_notify_chat" />
+
+        <View
+            android:id="@+id/view_addTitle"
+            android:layout_width="1dip"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/iv_addTitle"
+            android:background="#cccccc" />
+
+        <EditText
+            android:id="@+id/et_addTitle"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/view_addTitle"
+            android:background="@null"
+            android:ems="19"
+            android:hint="  请输入标题"
+            android:textColorHint="#cccccc"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_addContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_userName"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/login_btn">
+
+        <ImageView
+            android:id="@+id/iv_addContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:paddingLeft="30dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            android:src="@android:drawable/stat_notify_sdcard" />
+
+        <View
+            android:id="@+id/view_addContent"
+            android:layout_width="1dip"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/iv_addContent"
+            android:background="#cccccc" />
+
+        <EditText
+            android:id="@+id/et_addContent"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/view_addContent"
+            android:background="@null"
+            android:drawablePadding="5dp"
+            android:ems="19"
+            android:hint="  请输入笔记内容"
+            android:inputType="textPassword"
+            android:textColorHint="#cccccc"
+            android:textSize="15sp" />
+
+
+    </RelativeLayout>
+</LinearLayout>

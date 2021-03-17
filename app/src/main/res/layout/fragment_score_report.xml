@@ -4,8 +4,7 @@
     android:id="@+id/fragment_score_report"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".ScoreReport">
+    android:orientation="vertical">
 
     <!--选择时间-->
     <LinearLayout
