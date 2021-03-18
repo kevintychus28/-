@@ -13,10 +13,15 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.cms.R;
+import com.example.cms.entity.Cource;
 import com.example.cms.entity.Student;
 import com.example.cms.entity.Teacher;
 import com.example.cms.util.LoginService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -32,6 +37,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText et_password;
     private CheckBox cb_checkbox;
     private Button btn_login;
+
+    private List<Student> stuData;
 
     private static final String TAG = "Log日志";
 
@@ -69,9 +76,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         password = et_password.getText().toString().trim();
                         //发送登录请求
                         LoginService loginService = new LoginService();
-                        if (loginService.LoginService(userID, password)) {
+                        String json = loginService.LoginService(userID, password);
+                        List<Student> studentList = JSONObject.parseArray(json, Student.class);
+                        if (studentList != null) {
+                            Log.d(TAG, "studentList的数据为：" + studentList);
+                            Bundle bundle =new Bundle();
+                            bundle.putString("userID",userID);
+                            Log.d(TAG, userID);
+                            bundle.putString("userName",studentList.get(0).getStu_name());
+                            Log.d(TAG, studentList.get(0).getStu_name());
+                            bundle.putString("userSex",studentList.get(0).getStu_sex());
+                            bundle.putString("userDate",studentList.get(0).getStu_date());
+                            bundle.putString("userClass",studentList.get(0).getStu_class());
+                            bundle.putString("userCollege",studentList.get(0).getStu_college());
                             Intent i = new Intent();
-                            i.putExtra("userID",userID);
+                            i.putExtras(bundle);
                             i.setClass(LoginActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                             startActivity(i);
                         } else {

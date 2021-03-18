@@ -10,18 +10,18 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Selection;
+import android.text.Spannable;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.cms.R;
@@ -36,10 +36,10 @@ import com.example.cms.fragment.ScoreFragment;
 import com.example.cms.util.NoteService;
 import com.example.cms.util.ScheduleService;
 import com.example.cms.util.ScoreService;
-import com.mysql.cj.util.DnsSrv;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.BlockingDeque;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -80,11 +80,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<Note> noteData = new ArrayList<>();
     private ListView noteDetail;
 
+    // 个人主页
+    private TextView hp_userName;
+    private TextView hp_userID;
+
 //    在onCreate()之前你不能getIntent() – 那时根本就没有Intent可用.我相信任何需要Context的事情都是如此.
 //    但是,您的匿名内部类仍然可以调用getIntent(),因此您根本不需要将其声明为变量.
 //    userID = getIntent().getStringExtra("userID");
 
-    String userID = "17251102126";
+//    String userID = "17251102126";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +100,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //加载课程表
         fManager = getFragmentManager();
         setFragments(bottom_bar_1);
-//        String userID = getIntent().getStringExtra("userID");
+        String userID = getIntent().getStringExtra("userID");
+//        String userName = getIntent().getStringExtra("userName");
         getScheduleData(userID);
     }
 
@@ -122,29 +127,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    public String getUserID() {
+        return getIntent().getStringExtra("userID");
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bottom_bar_1:
                 setFragments(bottom_bar_1);
-//                getScheduleData(getIntent().getStringExtra("userID"));
-                getScheduleData(userID);
+                getScheduleData(getUserID());
+//                getScheduleData(userID);
                 break;
             case R.id.bottom_bar_2:
                 setFragments(bottom_bar_2);
-//                getScore(getIntent().getStringExtra("userID"));
-                getScore(userID);
+                getScore(getUserID());
+//                getScore(userID);
                 break;
             case R.id.bottom_bar_3:
                 setFragments(bottom_bar_3);
-//                getNote(getIntent().getStringExtra("userID"));
-                getNote(userID);
+                getNote(getUserID());
+//                getNote(userID);
                 break;
             case R.id.bottom_bar_4:
                 setFragments(bottom_bar_4);
-                Message msg = Message.obtain();
-                msg.what = 000;
-                mHandler.sendMessage(msg);
                 break;
         }
     }
@@ -158,22 +164,33 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             switch (msg.what) {
                 case 000:
+                    // 展示失败弹窗
                     showFailDialog();
                     break;
                 case 100:
+                    // 显示课程表
                     setSchedule();
                     break;
                 case 200:
+                    // 显示成绩表
                     setScore();
                     break;
                 case 300:
+                    // 显示笔记
                     setNote();
+                    break;
+                case 301:
+                    // 获取笔记内容
+                    getNote(getUserID());
+//                    getNote(userID);
                     break;
             }
         }
     };
 
-
+    /**
+     * 展示失败重新弹窗
+     */
     private void showFailDialog() {
         /* @setIcon 设置对话框图标
          * @setTitle 设置对话框标题
@@ -183,7 +200,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final AlertDialog.Builder normalDialog = new AlertDialog.Builder(MainActivity.this);
 //        normalDialog.setIcon(R.drawable.icon_dialog);
         normalDialog.setTitle("error");
-        normalDialog.setMessage("操作失败，请重试?");
+        normalDialog.setMessage("操作失败，请重试！");
         normalDialog.setPositiveButton("确定",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -267,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+//    <<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<--- 课程表 --->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>
 
     /**
      * 获取每日的课程
@@ -301,7 +319,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }.start();
     }
 
-
     /**
      * 插入当天课程
      *
@@ -335,11 +352,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tv.setText(c.getCou_name() + "\n" + c.getCou_classroom() + "\n" + c.getCou_teacher());
             //tv.setBackgroundColor(getResources().getColor(R.color.classIndex));
             tv.setBackground(getResources().getDrawable(R.drawable.course_shape));
+            tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showCourceDialog(c);
+                }
+            });
             ll.addView(tv);
             Log.d(TAG, c.getCou_name());
             pre = c;
         }
 
+    }
+
+    /**
+     * 展示单个课程的信息
+     */
+    public void showCourceDialog(Cource cource) {
+        AlertDialog.Builder deleteNoteDialog = new AlertDialog.Builder(MainActivity.this);
+        deleteNoteDialog.setTitle(cource.getCou_name());
+        deleteNoteDialog.setMessage("教室：" + cource.getCou_classroom() + "\n" + "教师：" + cource.getCou_teacher());
+        deleteNoteDialog.show();
     }
 
     /**
@@ -353,6 +386,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             initWeekPanel(weekPanels[i], courseData[i]);
         }
     }
+
+//    <<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<--- 成绩表 --->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>
 
     /**
      * 获取成绩
@@ -384,13 +419,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * 更新成绩
-     *
      */
     public void setScore() {
         scoreListAdapter = new ScoreListAdapter(this, scoreData);
         scoreDetail = findViewById(R.id.scoreDetail);
         scoreDetail.setAdapter(scoreListAdapter);
     }
+
+//    <<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<--- 笔记表 --->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>
 
     /**
      * 获取笔记
@@ -416,7 +452,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * 更新笔记
-     *
      */
     public void setNote() {
         noteListAdapter = new NoteListAdapter(MainActivity.this, noteData);
@@ -424,4 +459,197 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         noteDetail.setAdapter(noteListAdapter);
         Log.d(TAG, "更新笔记");
     }
+
+    /**
+     * 展示添加笔记的弹窗
+     */
+    public void showAddNoteDialog() {
+        /* @setView 装入自定义View ==> R.layout.dialog_note
+         */
+        AlertDialog.Builder addNoteDialog = new AlertDialog.Builder(MainActivity.this);
+        View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_note, null);
+        addNoteDialog.setTitle("添加笔记");
+        addNoteDialog.setView(dialogView);
+        addNoteDialog.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+        addNoteDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 获取EditView中的输入内容
+                        EditText et_addTitle = (EditText) dialogView.findViewById(R.id.et_title);
+                        EditText et_addContent = (EditText) dialogView.findViewById(R.id.et_content);
+                        String title = et_addTitle.getText().toString();
+                        String content = et_addContent.getText().toString();
+                        Log.d(TAG, "userID: " + getUserID());
+                        Log.d(TAG, "新笔记标题: " + title);
+                        Log.d(TAG, "新笔记内容: " + content);
+                        addNote(getUserID(), title, content);
+                    }
+                });
+        addNoteDialog.show();
+    }
+
+    /**
+     * 增加笔记
+     *
+     * @param userID
+     * @param title
+     * @param content
+     */
+    public void addNote(String userID, String title, String content) {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                NoteService noteService = new NoteService();
+                if (noteService.addNote(userID, title, content)) {
+                    Log.d(TAG, "笔记增加成功");
+                    Message msg = Message.obtain();
+                    msg.what = 301;
+                    mHandler.sendMessage(msg);
+                } else {
+                    Message msg = Message.obtain();
+                    msg.what = 000;
+                    mHandler.sendMessage(msg);
+                }
+            }
+        }.start();
+    }
+
+    /**
+     * 展示删除笔记的弹窗
+     */
+    public void showDeleteNoteDialog(String note_id) {
+        /* @setView 装入自定义View ==> R.layout.dialog_customize
+         * 由于dialog_customize.xml只放置了一个EditView，因此和图8一样
+         * dialog_customize.xml可自定义更复杂的View
+         */
+        AlertDialog.Builder deleteNoteDialog = new AlertDialog.Builder(MainActivity.this);
+        deleteNoteDialog.setTitle("删除笔记");
+        deleteNoteDialog.setMessage("是否确定删除此笔记？");
+        deleteNoteDialog.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+        deleteNoteDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 获取EditView中的输入内容
+                        deleteNote(getUserID(), note_id);
+                    }
+                });
+        deleteNoteDialog.show();
+    }
+
+    /**
+     * 删除笔记
+     *
+     * @param userID
+     * @param note_id
+     */
+    public void deleteNote(String userID, String note_id) {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                NoteService noteService = new NoteService();
+                if (noteService.deleteNote(userID, note_id)) {
+                    Log.d(TAG, "笔记删除成功");
+                    Message msg = Message.obtain();
+                    msg.what = 301;
+                    mHandler.sendMessage(msg);
+                } else {
+                    Message msg = Message.obtain();
+                    msg.what = 000;
+                    mHandler.sendMessage(msg);
+                }
+            }
+        }.start();
+    }
+
+    /**
+     * 展示修改笔记的弹窗
+     */
+    public void showEditNoteDialog(String note_id, String title, String content) {
+        /* @setView 装入自定义View ==> R.layout.dialog_note
+         */
+        AlertDialog.Builder editNoteDialog = new AlertDialog.Builder(MainActivity.this);
+        View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_note, null);
+        EditText et_editTitle = (EditText) dialogView.findViewById(R.id.et_title);
+        EditText et_editContent = (EditText) dialogView.findViewById(R.id.et_content);
+        editNoteDialog.setTitle("修改笔记");
+        editNoteDialog.setView(dialogView);
+        et_editTitle.setText(title);
+        et_editContent.setText(content);
+        // 输入框光标定位到末尾字符
+        CharSequence textTitle = et_editTitle.getText();
+        if (textTitle instanceof Spannable) {
+            Spannable spanText = (Spannable) textTitle;
+            Selection.setSelection(spanText, textTitle.length());
+        }
+        editNoteDialog.setNegativeButton("取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // TODO Auto-generated method stub
+                    }
+                });
+        editNoteDialog.setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // 获取EditView中的输入内容
+                        String title = et_editTitle.getText().toString();
+                        String content = et_editContent.getText().toString();
+                        Log.d(TAG, "userID: " + getUserID());
+                        Log.d(TAG, "修改后笔记标题: " + title);
+                        Log.d(TAG, "修改后笔记内容: " + content);
+                        editNote(getUserID(), note_id, title, content);
+                    }
+                });
+        editNoteDialog.show();
+    }
+
+    /**
+     * 修改笔记
+     *
+     * @param userID
+     * @param title
+     * @param content
+     */
+    public void editNote(String userID, String note_id, String title, String content) {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                NoteService noteService = new NoteService();
+                if (noteService.editNote(userID, note_id, title, content)) {
+                    Log.d(TAG, "笔记修改成功");
+                    Message msg = Message.obtain();
+                    msg.what = 301;
+                    mHandler.sendMessage(msg);
+                } else {
+                    Message msg = Message.obtain();
+                    msg.what = 000;
+                    mHandler.sendMessage(msg);
+                }
+            }
+        }.start();
+    }
+
+//    <<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<--- 我的页面 --->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>
+
+
+
+
 }

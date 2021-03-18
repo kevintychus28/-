@@ -25,7 +25,7 @@ public class LoginService {
 
     private String url = "http://10.0.2.2:8080/LoginServlet";//服务器接口地址
 
-    public boolean LoginService(String userID, String password){
+    public String LoginService(String userID, String password) {
         Student stu = new Student(userID, password);
         NameValuePair pair1 = new BasicNameValuePair("userID", userID);
         NameValuePair pair2 = new BasicNameValuePair("password", password);
@@ -47,36 +47,38 @@ public class LoginService {
             // 检查状态码
             if (response.getStatusLine().getStatusCode() == 200) {
                 // 查看响应结果
-                Boolean checkLogin = getInfo(response);
-                Log.d(TAG,  String.valueOf(checkLogin));
-                if (checkLogin) {
-                    return true;
+                String info = getInfo(response);
+                Log.d(TAG, info);
+                if (info != null) {
+                    return info;
                 }
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     // 收取数据
-    private static boolean getInfo(HttpResponse response) throws Exception {
+    private static String getInfo(HttpResponse response) throws Exception {
         Log.d(TAG, "getInfo: 接受响应");
         //包装服务器的响应内容
         HttpEntity httpEntity = response.getEntity();
         //通过httpEntity对象获取服务器的响应内容
         InputStream inputStream = httpEntity.getContent();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        String result = "";
-        String line = "";
-        while (null != (line = reader.readLine())) {
-            result += line;
+        StringBuffer sb = new StringBuffer();
+        String temp;
+        // 获取服务器的响应内容
+        while (null != (temp = reader.readLine())) {
+            sb.append(temp);
         }
-        Log.d(TAG, result);
-        if (result.equals("success")) {
-            return true;
+        String json = sb.toString();
+        Log.d(TAG, json);
+        if (sb.toString() != null) {
+            return json;
         }
-        return false;
+        return null;
     }
 }

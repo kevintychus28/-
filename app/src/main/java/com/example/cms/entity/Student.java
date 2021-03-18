@@ -9,7 +9,10 @@ public class Student {
     private String stu_class;
     private String stu_college;
 
-    public Student (String stu_id, String stu_password){
+    public Student() {
+    }
+
+    public Student(String stu_id, String stu_password) {
         this.stu_id = stu_id;
         this.stu_password = stu_password;
     }

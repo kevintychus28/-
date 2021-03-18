@@ -12,22 +12,14 @@
         android:layout_height="55dp"
         android:background="#004684">
 
-        <ImageView
-            android:id="@+id/iv_deleteNote"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:src="@mipmap/delete" />
 
         <ImageView
             android:id="@+id/iv_addNote"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
             android:src="@mipmap/add" />
     </RelativeLayout>
 
