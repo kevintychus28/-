@@ -2,6 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -53,9 +57,9 @@
     <RelativeLayout
         android:id="@+id/rl_addContent"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         android:layout_below="@id/rl_userName"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="3dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:background="@drawable/login_btn">
@@ -82,7 +86,7 @@
         <EditText
             android:id="@+id/et_content"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
@@ -91,10 +95,10 @@
             android:layout_toRightOf="@id/view_addContent"
             android:background="@null"
             android:drawablePadding="5dp"
-            android:hint="  请输入笔记内容\n  只能输入200个字噢~"
+            android:hint="  请输入笔记内容\n  只能输入800个字噢~"
             android:textColorHint="#cccccc"
             android:textSize="15sp"
-            android:maxLength="200"/>
+            android:maxLength="800"/>
 
 
     </RelativeLayout>

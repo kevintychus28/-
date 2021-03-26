@@ -19,11 +19,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginService {
+public class LoginServiceTec {
 
     private static final String TAG = "Log日志";
 
-    private String url = "http://10.0.2.2:8080/LoginServlet";//服务器接口地址
+    private String url = "http://10.0.2.2:8080/LoginServletTec";//服务器接口地址
 
     public String LoginService(String userID, String password) {
         Student stu = new Student(userID, password);
@@ -43,7 +43,7 @@ public class LoginService {
             HttpClient httpClient = new DefaultHttpClient();
             // 客户端调用execute方法，使用POST方式执行请求，获得服务器端的回应response
             HttpResponse response = httpClient.execute(httpPost);
-            Log.e(TAG, "发送登录请求");
+            Log.e(TAG, "发送请求");
             // 检查状态码
             if (response.getStatusLine().getStatusCode() == 200) {
                 // 查看响应结果
@@ -62,7 +62,7 @@ public class LoginService {
 
     // 收取数据
     private static String getInfo(HttpResponse response) throws Exception {
-        Log.e(TAG, "getInfo: 接受登录响应");
+        Log.e(TAG, "getInfo: 接受响应");
         //包装服务器的响应内容
         HttpEntity httpEntity = response.getEntity();
         //通过httpEntity对象获取服务器的响应内容
@@ -75,7 +75,7 @@ public class LoginService {
             sb.append(temp);
         }
         String json = sb.toString();
-        Log.e(TAG, "登录响应json："+json);
+        Log.e(TAG, json);
         if (sb.toString() != null) {
             return json;
         }

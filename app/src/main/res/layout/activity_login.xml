@@ -33,7 +33,7 @@
             android:background="@null"
             app:buttonTint="#004684">
             <RadioButton
-                android:id="@+id/student"
+                android:id="@+id/is_student"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="学生端"
@@ -41,7 +41,7 @@
                 android:checked="true"
                 style="@style/select_flex_style"/>
             <RadioButton
-                android:id="@+id/teacher"
+                android:id="@+id/is_teacher"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="教师端"

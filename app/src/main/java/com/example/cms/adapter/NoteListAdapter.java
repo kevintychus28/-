@@ -1,23 +1,15 @@
 package com.example.cms.adapter;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Message;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cms.R;
 import com.example.cms.activity.MainActivity;
-import com.example.cms.entity.Cource;
 import com.example.cms.entity.Note;
-import com.example.cms.util.NoteService;
 
 import java.util.List;
 
@@ -59,10 +51,11 @@ public class NoteListAdapter extends BaseAdapter {
             // 创建对象(里面是我们要得到里面的属性)
             holder = new ListViewHolder();
             // 找控件
+            holder.noteItem = (LinearLayout) convertView.findViewById(R.id.noteItem) ;
             holder.nTitle = (TextView) convertView.findViewById(R.id.item_Title);
             holder.nContent = (TextView) convertView.findViewById(R.id.item_Content);
-            holder.nDelete = (ImageView) convertView.findViewById(R.id.item_Delete);
-            holder.nEdit = (ImageView) convertView.findViewById(R.id.item_edit);
+            holder.nDelete = (TextView) convertView.findViewById(R.id.item_Delete);
+            holder.nEdit = (TextView) convertView.findViewById(R.id.item_Edit);
             // 保存holder对象
             convertView.setTag(holder);
         } else {
@@ -82,7 +75,7 @@ public class NoteListAdapter extends BaseAdapter {
         holder.nDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "点击了标题为 " + note.getTitle() + " 笔记的删除按钮，且note_ID为：" + note.getNote_id());
+                Log.e(TAG, "点击了标题为 " + note.getTitle() + " 笔记的删除按钮，且note_ID为：" + note.getNote_id());
                 context.showDeleteNoteDialog(note.getNote_id());
             }
         });
@@ -90,7 +83,7 @@ public class NoteListAdapter extends BaseAdapter {
         holder.nEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "点击了标题为 " + note.getTitle() + " 笔记的修改按钮，且note_ID为：" + note.getNote_id());
+                Log.e(TAG, "点击了标题为 " + note.getTitle() + " 笔记的修改按钮，且note_ID为：" + note.getNote_id());
                 context.showEditNoteDialog(note.getNote_id(), note.getTitle(), note.getContent());
             }
         });
@@ -99,10 +92,11 @@ public class NoteListAdapter extends BaseAdapter {
 
     class ListViewHolder {
         String nID;
+        LinearLayout noteItem;
         TextView nTitle;
         TextView nContent;
-        ImageView nEdit;
-        ImageView nDelete;
+        TextView nEdit;
+        TextView nDelete;
     }
 
 }

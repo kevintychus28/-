@@ -1,25 +1,17 @@
-package com.example.cms.fragment;
+package com.example.cms.view;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.cms.R;
 
 import com.example.cms.activity.MainActivity;
-import com.example.cms.util.NoteService;
-
-import java.util.Calendar;
 
 
 public class NotesFragment extends Fragment {
@@ -46,7 +38,7 @@ public class NotesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                Log.d(TAG, "点击增加笔记按钮");
+                Log.e(TAG, "点击增加笔记按钮");
                 mContext.showAddNoteDialog();
             }
         });

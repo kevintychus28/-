@@ -1,45 +1,62 @@
 package com.example.cms.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.multidex.MultiDex;
 
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
 import android.text.Selection;
 import android.text.Spannable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.cms.R;
 import com.example.cms.adapter.NoteListAdapter;
 import com.example.cms.adapter.ScoreListAdapter;
-import com.example.cms.entity.Cource;
+import com.example.cms.entity.Course;
 import com.example.cms.entity.Note;
-import com.example.cms.fragment.HomePageFragment;
-import com.example.cms.fragment.NotesFragment;
-import com.example.cms.fragment.ScheduleFragment;
-import com.example.cms.fragment.ScoreFragment;
+import com.example.cms.entity.Roster;
+import com.example.cms.util.AlertService;
+import com.example.cms.view.HomePageFragment;
+import com.example.cms.view.NotesFragment;
+import com.example.cms.view.ScheduleFragment;
+import com.example.cms.view.ScoreFragment;
 import com.example.cms.util.NoteService;
 import com.example.cms.util.ScheduleService;
 import com.example.cms.util.ScoreService;
+import com.example.cms.view.SwipeListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
-import java.util.concurrent.BlockingDeque;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -67,18 +84,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // 课程表
     int itemHeight;
     int marTop, marLeft;
-    private List[] courseData = new ArrayList[7];
+    private List[] courseData = new ArrayList[7];// 每日课程
     private LinearLayout[] weekPanels = new LinearLayout[7];
+    private Intent intent;
 
     // 成绩表
     private ScoreListAdapter scoreListAdapter;
-    private List<Cource> scoreData;
+    private List<String> courseNameList;// 所有课程的名称
+    private List<String> studentNameList;// 单门课程中的学生名单
+    private List<Roster> showScore;// 展示的成绩
+    String courseName;
+    String studentName;
     private ListView scoreDetail;
+    private Spinner switchCourse;
+    private TextView rName;
+    private Button edit_score;
 
     // 笔记
     private NoteListAdapter noteListAdapter;
     private List<Note> noteData = new ArrayList<>();
-    private ListView noteDetail;
+    private SwipeListView noteDetail;
 
     // 个人主页
     private TextView hp_userName;
@@ -88,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    但是,您的匿名内部类仍然可以调用getIntent(),因此您根本不需要将其声明为变量.
 //    userID = getIntent().getStringExtra("userID");
 
-//    String userID = "17251102126";
+    //    String userID = "17251102126";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,9 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //加载课程表
         fManager = getFragmentManager();
         setFragments(bottom_bar_1);
-        String userID = getIntent().getStringExtra("userID");
-//        String userName = getIntent().getStringExtra("userName");
-        getScheduleData(userID);
+        getScheduleData(getUserID(), getIdentity());
     }
 
     //实例化
@@ -131,23 +154,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return getIntent().getStringExtra("userID");
     }
 
+    public String getIdentity() {
+        if (!getIntent().getBooleanExtra("is_stu", true)) {
+            return "teacher";
+        }
+        return "student";
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bottom_bar_1:
                 setFragments(bottom_bar_1);
-                getScheduleData(getUserID());
-//                getScheduleData(userID);
+                getScheduleData(getUserID(), getIdentity());
                 break;
             case R.id.bottom_bar_2:
                 setFragments(bottom_bar_2);
-                getScore(getUserID());
-//                getScore(userID);
+                getScore(getIdentity());
                 break;
             case R.id.bottom_bar_3:
                 setFragments(bottom_bar_3);
                 getNote(getUserID());
-//                getNote(userID);
                 break;
             case R.id.bottom_bar_4:
                 setFragments(bottom_bar_4);
@@ -175,6 +202,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // 显示成绩表
                     setScore();
                     break;
+                case 201:
+                    // 获取成绩表
+                    getScore(getIdentity());
+                    break;
                 case 300:
                     // 显示笔记
                     setNote();
@@ -182,7 +213,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 case 301:
                     // 获取笔记内容
                     getNote(getUserID());
-//                    getNote(userID);
                     break;
             }
         }
@@ -291,27 +321,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      *
      * @param userID
      */
-    public void getScheduleData(String userID) {
+    public void getScheduleData(String userID, String identity) {
+        Log.e(TAG, userID + identity);
         new Thread() {
             @Override
             public void run() {
                 super.run();
                 ScheduleService scheduleService = new ScheduleService();
-                String json = scheduleService.getSchedule(userID);
-                Log.d(TAG, "课程JSON数据: " + json);
+                String json = scheduleService.getSchedule(userID, identity);
+                Log.e(TAG, "课程JSON数据: " + json);
                 // 把json数据转换为List
-                List<Cource> scheduleList = JSONObject.parseArray(json, Cource.class);
-//                Log.d(TAG, "scheduleList第一条数据：" + scheduleList.get(1).toString());
+                List<Course> scheduleList = JSONObject.parseArray(json, Course.class);
+                // 一周七天分别插入课程
                 for (int i = 0; i < 7; i++) {
-                    List<Cource> list = new ArrayList<Cource>();
+                    List<Course> list = new ArrayList<Course>();
+                    // 插入单天内的课程
                     for (int j = 0; j < scheduleList.size(); j++)
                         if (scheduleList.get(j).getCou_weekday().equals(Integer.toString(i + 1))) {
                             list.add(scheduleList.get(j));
-                            Log.d(TAG, "--插入周" + (i + 1) + "课程");
+                            Log.e(TAG, "--插入周" + (i + 1) + "课程");
                         }
-                    courseData[i] = list;
-                    Log.d(TAG, "courseData[" + i + "]: " + courseData[i]);
+                    courseData[i] = list;// 周(i+1)的课程
+                    Log.e(TAG, "courseData[" + i + "]: " + courseData[i]);
                 }
+                // 获取所有课程名
+                courseNameList = new ArrayList<>();
+                courseNameList.add("");
+                for (int j = 0; j < scheduleList.size(); j++) {
+                    courseNameList.add(scheduleList.get(j).getCou_name());
+                }
+                Log.e(TAG, "courseNameList：" + courseNameList);
+                courseName = courseNameList.get(0);
+                Log.e(TAG, "courseName：" + courseName);
                 Message msg = Message.obtain();
                 msg.what = 100;
                 mHandler.sendMessage(msg);
@@ -325,16 +366,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param ll
      * @param data
      */
-    public void initWeekPanel(LinearLayout ll, List<Cource> data) {
+    public void initWeekPanel(LinearLayout ll, List<Course> data) {
 
         if (ll == null || data == null || data.size() < 1) return;
         ll.removeAllViews();
         itemHeight = getResources().getDimensionPixelSize(R.dimen.weekItemHeight);
         marTop = getResources().getDimensionPixelSize(R.dimen.weekItemMarTop);
         marLeft = getResources().getDimensionPixelSize(R.dimen.weekItemMarLeft);
-        Cource pre = data.get(0);
+        Course pre = data.get(0);
         for (int i = 0; i < data.size(); i++) {
-            Cource c = data.get(i);
+            Course c = data.get(i);
             int cPeriod = Integer.parseInt(c.getCou_period());
             int prePeriod = Integer.parseInt(pre.getCou_period());
             TextView tv = new TextView(this);
@@ -355,11 +396,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    showCourceDialog(c);
+                    showCourseDialog(c);
                 }
             });
             ll.addView(tv);
-            Log.d(TAG, c.getCou_name());
+            Log.e(TAG, c.getCou_name());
             pre = c;
         }
 
@@ -368,11 +409,63 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 展示单个课程的信息
      */
-    public void showCourceDialog(Cource cource) {
-        AlertDialog.Builder deleteNoteDialog = new AlertDialog.Builder(MainActivity.this);
-        deleteNoteDialog.setTitle(cource.getCou_name());
-        deleteNoteDialog.setMessage("教室：" + cource.getCou_classroom() + "\n" + "教师：" + cource.getCou_teacher());
-        deleteNoteDialog.show();
+    public void showCourseDialog(Course course) {
+        // 装入自定义View ==> R.layout.dialog_course
+        AlertDialog.Builder showCourseDialog = new AlertDialog.Builder(MainActivity.this);
+        View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_course, null);
+        showCourseDialog.setTitle("课程信息");
+        showCourseDialog.setView(dialogView);
+        // 展示课程信息
+        TextView dl_courseName = (TextView) dialogView.findViewById(R.id.dl_courseName);
+        TextView dl_teacherName = (TextView) dialogView.findViewById(R.id.dl_teacherName);
+        TextView dl_courseClassroom = (TextView) dialogView.findViewById(R.id.dl_courseClassroom);
+        dl_courseName.setText(course.getCou_name());
+        dl_teacherName.setText(course.getCou_teacher());
+        dl_courseClassroom.setText(course.getCou_classroom());
+        // 设置课程提醒
+        Button btn_alert = (Button) dialogView.findViewById(R.id.btn_alert);
+        btn_alert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!getWeek().equals(course.getCou_weekday())) {
+                    Toast toast = Toast.makeText(MainActivity.this, "只能提醒当天课程噢~", Toast.LENGTH_SHORT);
+                    toast.show();
+                } else {
+                    Log.e(TAG, "该课程开始时间为：" + course.getStart_time());
+                    intent = new Intent(MainActivity.this, AlertService.class);
+                    intent.putExtra("start_time", course.getStart_time());
+                    //开启关闭Service
+                    startService(intent);
+                    Toast toast = Toast.makeText(MainActivity.this, "提醒设置成功！", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        });
+        showCourseDialog.show();
+    }
+
+    private String getWeek() {
+        String week = "";
+        Date today = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(today);
+        int weekday = c.get(Calendar.DAY_OF_WEEK);
+        if (weekday == 1) {
+            week = "7"; //周日
+        } else if (weekday == 2) {
+            week = "1"; //周一
+        } else if (weekday == 3) {
+            week = "2"; //周二
+        } else if (weekday == 4) {
+            week = "3"; //周三
+        } else if (weekday == 5) {
+            week = "4"; //周四
+        } else if (weekday == 6) {
+            week = "5"; //周五
+        } else if (weekday == 7) {
+            week = "6"; //周六
+        }
+        return week;
     }
 
     /**
@@ -382,7 +475,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Log.i("Msg", "初始化面板");
         for (int i = 0; i < weekPanels.length; i++) {
             weekPanels[i] = (LinearLayout) findViewById(R.id.weekPanel_1 + i);
-            Log.d(TAG, "--更新周" + (i + 1) + "的课程");
+            Log.e(TAG, "--更新周" + (i + 1) + "的课程");
             initWeekPanel(weekPanels[i], courseData[i]);
         }
     }
@@ -392,24 +485,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 获取成绩
      *
+     * @param identify
+     */
+    public void getScore(String identify) {
+        if (identify.equals("student")) {
+            stuGetScore(getUserID());
+        } else if (identify.equals("teacher")) {
+            getCourseGrade(getUserID(), courseName);
+        }
+    }
+
+    /**
+     * 学生获取成绩
+     *
      * @param userID
      */
-    public void getScore(String userID) {
+    public void stuGetScore(String userID) {
         new Thread() {
             @Override
             public void run() {
                 super.run();
                 ScoreService scoreService = new ScoreService();
                 String json = scoreService.getScore(userID);
-                Log.d(TAG, "成绩JSON数据: " + json);
+                Log.e(TAG, "成绩JSON数据: " + json);
                 // 把json数据转换为List
-                List<Cource> scoreList = JSONObject.parseArray(json, Cource.class);
-                scoreData = new ArrayList<>();
+                List<Roster> scoreList = JSONObject.parseArray(json, Roster.class);
+                showScore = new ArrayList<>();// 获取该学生所有正常成绩的课程成绩单
                 for (int i = 0; i < scoreList.size(); i++) {
-                    if (!scoreList.get(i).getGrade().equals("")) {
-                        scoreData.add(scoreList.get(i));
+                    if (Integer.parseInt(scoreList.get(i).getGrade()) >= 0 && Integer.parseInt(scoreList.get(i).getGrade()) <= 100) {
+                        showScore.add(scoreList.get(i));
                     }
                 }
+                Log.e(TAG, "showScore: " + showScore);
                 Message msg = Message.obtain();
                 msg.what = 200;
                 mHandler.sendMessage(msg);
@@ -418,12 +525,213 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
+     * 老师获取单门课程中所有学生的成绩
+     *
+     * @param userID
+     */
+    public void getCourseGrade(String userID, String cou_name) {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                Log.e(TAG, "cou_name：" + cou_name);
+                ScoreService scoreService = new ScoreService();
+                String json = scoreService.getCourseGrade(userID, cou_name);
+                Log.e(TAG, "单门课程中所有学生的成绩JSON数据: " + json);
+                // 把json数据转换为List
+                List<Roster> scoreList = JSONObject.parseArray(json, Roster.class);
+                showScore = new ArrayList<>();// 获取该门课程的成绩单
+                studentNameList = new ArrayList<>();// 获取该门课程的学生名单
+                for (int i = 0; i < scoreList.size(); i++) {
+                    if (Integer.parseInt(scoreList.get(i).getGrade()) >= 0 && Integer.parseInt(scoreList.get(i).getGrade()) <= 101) {
+                        showScore.add(scoreList.get(i));
+                        studentNameList.add(scoreList.get(i).getName());
+                    }
+                }
+                Log.e(TAG, "showScore: " + showScore);
+                Message msg = Message.obtain();
+                msg.what = 200;
+                mHandler.sendMessage(msg);
+            }
+        }.start();
+    }
+
+    boolean isEditGradeFirst = true;
+//    boolean doScoreDetail = false;
+
+    /**
      * 更新成绩
+     * 200
      */
     public void setScore() {
-        scoreListAdapter = new ScoreListAdapter(this, scoreData);
+        if (isEditGradeFirst) {
+            editGrade();
+            isEditGradeFirst = false;
+        }
+        scoreListAdapter = new ScoreListAdapter(this, showScore);
         scoreDetail = findViewById(R.id.scoreDetail);
         scoreDetail.setAdapter(scoreListAdapter);
+    }
+
+    boolean isSwitchCourseFirst = true;
+
+    /**
+     * 展示修改成绩入口
+     */
+    public void editGrade() {
+        switchCourse = findViewById(R.id.switchCourse);
+        rName = findViewById(R.id.rName);
+        edit_score = findViewById(R.id.edit_score);
+        if (!getIntent().getBooleanExtra("is_stu", true)) {
+            switchCourse.setVisibility(View.VISIBLE);
+            rName.setText("学生姓名");
+            edit_score.setVisibility(View.VISIBLE);
+        }
+        //选择课程的下拉框
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, courseNameList);
+        switchCourse.setAdapter(adapter);
+        //为下拉框添加选择事件
+        switchCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            //获取选择内容
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (!isSwitchCourseFirst) {
+                    courseName = courseNameList.get(position);
+                    Log.e(TAG, "选择的课程是：" + courseName);
+                    getCourseGrade(getUserID(), courseName);
+                } else isSwitchCourseFirst = false;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        //为修改成绩的按钮添加选择事件
+        edit_score.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showEditScoreDialog();
+            }
+        });
+    }
+
+    /**
+     * 展示修改成绩的弹窗
+     */
+    public void showEditScoreDialog() {
+        /* @setView 装入自定义View ==> R.layout.dialog_score
+         */
+        AlertDialog.Builder editNoteDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+        View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_score, null);
+        editNoteDialogBuilder.setTitle("修改成绩");
+        editNoteDialogBuilder.setView(dialogView);
+        //创建AlertDialog对象，用于下面去获取确定按钮
+        AlertDialog editNoteDialog = editNoteDialogBuilder.create();
+        //选择学生的下拉框
+        Spinner switchStudent = (Spinner) dialogView.findViewById(R.id.switchStudent);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, studentNameList);
+        switchStudent.setAdapter(adapter);
+        //编辑成绩的输入框
+        EditText et_grade = (EditText) dialogView.findViewById(R.id.et_grade);
+        //修改成绩的按钮
+        Button grade_submit = (Button) dialogView.findViewById(R.id.grade_submit);
+
+        //为输入框添加编辑事件
+        et_grade.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                if (TextUtils.isEmpty(et_grade.getText())) {
+                    grade_submit.setEnabled(false);
+                } else {
+                    grade_submit.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (TextUtils.isEmpty(et_grade.getText())) {
+                    grade_submit.setEnabled(false);
+                } else {
+                    grade_submit.setEnabled(true);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        //为下拉框添加选择事件
+        switchStudent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            //获取选择内容
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                studentName = studentNameList.get(position);
+                Log.e(TAG, "选择的学生是：" + studentName);
+                if (showScore.get(position).getGrade().equals("101")) {
+                    et_grade.setText(null);
+                } else et_grade.setText(showScore.get(position).getGrade());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
+        //为修改按钮添加点击事件
+        grade_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 获取EditView中的输入内容
+                String grade = et_grade.getText().toString();
+                if (Integer.parseInt(grade) > 0 && Integer.parseInt(grade) < 100) {
+                    Log.e(TAG, "userID: " + getUserID());
+                    Log.e(TAG, "学生姓名为: " + studentName);
+                    Log.e(TAG, "成绩为: " + grade);
+                    editScore(getUserID(), courseName, studentName, grade);
+                } else {
+                    Toast toast = Toast.makeText(MainActivity.this, "只能输入正整数0-100噢！", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        });
+        // dialog的关闭按钮
+        editNoteDialogBuilder.setPositiveButton("关闭",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+        editNoteDialogBuilder.show();
+    }
+
+    /**
+     * 修改成绩
+     *
+     * @param userID
+     * @param cou_name
+     * @param stu_name
+     * @param grade
+     */
+    public void editScore(String userID, String cou_name, String stu_name, String grade) {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                ScoreService scoreService = new ScoreService();
+                if (scoreService.editScore(userID, cou_name, stu_name, grade)) {
+                    Log.e(TAG, "成绩修改成功");
+                    Message msg = Message.obtain();
+                    msg.what = 201;
+                    mHandler.sendMessage(msg);
+                } else {
+                    Message msg = Message.obtain();
+                    msg.what = 000;
+                    mHandler.sendMessage(msg);
+                }
+            }
+        }.start();
     }
 
 //    <<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<--- 笔记表 --->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>
@@ -440,7 +748,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 super.run();
                 NoteService noteService = new NoteService();
                 String json = noteService.getNote(userID);
-                Log.d(TAG, "笔记JSON数据: " + json);
+                Log.e(TAG, "笔记JSON数据: " + json);
                 // 把json数据转换为List
                 noteData = JSONObject.parseArray(json, Note.class);
                 Message msg = Message.obtain();
@@ -457,15 +765,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         noteListAdapter = new NoteListAdapter(MainActivity.this, noteData);
         noteDetail = findViewById(R.id.notesDetail);
         noteDetail.setAdapter(noteListAdapter);
-        Log.d(TAG, "更新笔记");
+        Log.e(TAG, "更新笔记");
     }
 
     /**
      * 展示添加笔记的弹窗
      */
     public void showAddNoteDialog() {
-        /* @setView 装入自定义View ==> R.layout.dialog_note
-         */
+        // 装入自定义View ==> R.layout.dialog_note
         AlertDialog.Builder addNoteDialog = new AlertDialog.Builder(MainActivity.this);
         View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_note, null);
         addNoteDialog.setTitle("添加笔记");
@@ -486,9 +793,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         EditText et_addContent = (EditText) dialogView.findViewById(R.id.et_content);
                         String title = et_addTitle.getText().toString();
                         String content = et_addContent.getText().toString();
-                        Log.d(TAG, "userID: " + getUserID());
-                        Log.d(TAG, "新笔记标题: " + title);
-                        Log.d(TAG, "新笔记内容: " + content);
+                        Log.e(TAG, "userID: " + getUserID());
+                        Log.e(TAG, "新笔记标题: " + title);
+                        Log.e(TAG, "新笔记内容: " + content);
                         addNote(getUserID(), title, content);
                     }
                 });
@@ -509,7 +816,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 super.run();
                 NoteService noteService = new NoteService();
                 if (noteService.addNote(userID, title, content)) {
-                    Log.d(TAG, "笔记增加成功");
+                    Log.e(TAG, "笔记增加成功");
                     Message msg = Message.obtain();
                     msg.what = 301;
                     mHandler.sendMessage(msg);
@@ -564,7 +871,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 super.run();
                 NoteService noteService = new NoteService();
                 if (noteService.deleteNote(userID, note_id)) {
-                    Log.d(TAG, "笔记删除成功");
+                    Log.e(TAG, "笔记删除成功");
                     Message msg = Message.obtain();
                     msg.what = 301;
                     mHandler.sendMessage(msg);
@@ -611,9 +918,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         // 获取EditView中的输入内容
                         String title = et_editTitle.getText().toString();
                         String content = et_editContent.getText().toString();
-                        Log.d(TAG, "userID: " + getUserID());
-                        Log.d(TAG, "修改后笔记标题: " + title);
-                        Log.d(TAG, "修改后笔记内容: " + content);
+                        Log.e(TAG, "userID: " + getUserID());
+                        Log.e(TAG, "修改后笔记标题: " + title);
+                        Log.e(TAG, "修改后笔记内容: " + content);
                         editNote(getUserID(), note_id, title, content);
                     }
                 });
@@ -634,7 +941,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 super.run();
                 NoteService noteService = new NoteService();
                 if (noteService.editNote(userID, note_id, title, content)) {
-                    Log.d(TAG, "笔记修改成功");
+                    Log.e(TAG, "笔记修改成功");
                     Message msg = Message.obtain();
                     msg.what = 301;
                     mHandler.sendMessage(msg);
@@ -650,6 +957,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    <<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<--- 我的页面 --->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>
 
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //在Activity被关闭后，关闭Service
+//        stopService(intent);
+    }
 }
+

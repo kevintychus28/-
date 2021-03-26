@@ -29,12 +29,16 @@
         android:background="@drawable/background_gradient_from_top_to_bottom" />
 
 
-    <ListView
+    <com.example.cms.view.SwipeListView
         android:id="@+id/notesDetail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp" />
+        android:layout_height="wrap_content"
+        android:cacheColorHint="@android:color/transparent"
+        android:listSelector="@android:color/transparent"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="2dp">
+    </com.example.cms.view.SwipeListView>
+
 
 
 </LinearLayout>

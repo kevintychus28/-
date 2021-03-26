@@ -11,12 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CMS">
+
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
@@ -27,6 +27,12 @@
             android:screenOrientation="portrait">
 
         </activity>
+
+        <service android:name=".util.AlertService" >
+        </service>
+
+        <receiver android:name=".util.AlarmReceiver" >
+        </receiver>
 
     </application>
 

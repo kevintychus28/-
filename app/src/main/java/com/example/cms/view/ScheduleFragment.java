@@ -1,4 +1,4 @@
-package com.example.cms.fragment;
+package com.example.cms.view;
 
 import android.app.Fragment;
 import android.os.Bundle;

@@ -192,7 +192,7 @@
 
 
 <!--            <GridView-->
-<!--                android:id="@+id/courceDetail"-->
+<!--                android:id="@+id/courseDetail"-->
 <!--                android:layout_width="match_parent"-->
 <!--                android:layout_height="match_parent"-->
 <!--                android:horizontalSpacing="1dp"-->

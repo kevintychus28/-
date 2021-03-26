@@ -6,36 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--选择时间-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp">
-        <!--下拉方式选学年-->
-        <Spinner
-            android:id="@+id/switchYear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="2dp"
-            android:background="#004684" />
-        <!--下拉方式选学期-->
-        <Spinner
-            android:id="@+id/switchTerm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center" />
-    </LinearLayout>
+    <!--下拉方式选课程-->
+    <Spinner
+        android:id="@+id/switchCourse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
     <!--分隔线-->
     <View
@@ -49,31 +26,47 @@
         android:background="#E1E1E1">
 
         <TextView
+            android:id="@+id/rName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:layout_marginLeft="15dp"
             android:layout_marginTop="7dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="15dp"
+            android:layout_weight="3"
             android:gravity="left"
-            android:textSize="16dp"
-            android:text="课程名称" />
+            android:text="课程名称"
+            android:textSize="16dp" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginTop="7dp"
-            android:layout_marginBottom="5dp"
             android:layout_marginRight="15dp"
+            android:layout_marginBottom="5dp"
+            android:layout_weight="1"
             android:gravity="right"
-            android:textSize="16dp"
-            android:text="成绩" />
+            android:text="成绩"
+            android:textSize="16dp" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/scoreDetail"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
+        <ListView
+            android:id="@+id/scoreDetail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/edit_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="修改\n成绩"
+            android:visibility="invisible" />
+    </RelativeLayout>
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.cms.fragment;
+package com.example.cms.view;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -24,13 +24,13 @@ public class HomePageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_homepage, container, false);
-        Log.d(TAG, "更新个人信息");
+        Log.e(TAG, "更新个人信息");
         TextView hp_userName = (TextView) view.findViewById(R.id.hp_userName);
         TextView hp_userID = (TextView) view.findViewById(R.id.hp_userID);
-        Log.d(TAG, mContext.getIntent().getStringExtra("userName") + mContext.getIntent().getStringExtra("userID"));
+        Log.e(TAG, mContext.getIntent().getStringExtra("userName") + mContext.getIntent().getStringExtra("userID"));
         hp_userName.setText(mContext.getIntent().getStringExtra("userName"));
         hp_userID.setText(mContext.getIntent().getStringExtra("userID"));
-        Log.d(TAG, hp_userName.getText().toString() + hp_userID.getText().toString());
+        Log.e(TAG, hp_userName.getText().toString() + hp_userID.getText().toString());
         return view;
     }
 

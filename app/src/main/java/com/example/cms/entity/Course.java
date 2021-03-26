@@ -1,14 +1,15 @@
 package com.example.cms.entity;
 
-public class Cource {
+public class Course {
     private String Cou_name;
     private String Cou_teacher;
     private String Cou_classroom;
     private String Cou_weekday;
     private String Cou_period;
     private String grade;
+    private String start_time;
 
-    public Cource() {
+    public Course() {
     }
 
     public String getCou_name() {
@@ -59,15 +60,24 @@ public class Cource {
         this.grade = grade;
     }
 
+    public String getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(String start_time) {
+        this.start_time = start_time;
+    }
+
     @Override
     public String toString() {
-        return "Cource{" +
+        return "Course{" +
                 "Cou_name='" + Cou_name + '\'' +
                 ", Cou_teacher='" + Cou_teacher + '\'' +
                 ", Cou_classroom='" + Cou_classroom + '\'' +
                 ", Cou_weekday='" + Cou_weekday + '\'' +
                 ", Cou_period='" + Cou_period + '\'' +
                 ", grade='" + grade + '\'' +
+                ", start_time='" + start_time + '\'' +
                 '}';
     }
 }
