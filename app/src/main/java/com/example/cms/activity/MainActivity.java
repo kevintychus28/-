@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SwipeListView noteDetail;
 
     // 个人主页
-    private TextView hp_userName;
-    private TextView hp_userID;
+
+
 
 //    在onCreate()之前你不能getIntent() – 那时根本就没有Intent可用.我相信任何需要Context的事情都是如此.
 //    但是,您的匿名内部类仍然可以调用getIntent(),因此您根本不需要将其声明为变量.
@@ -957,7 +957,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //    <<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<--- 我的页面 --->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>
 
 
-    @Override
+
+
+
+
+
+        @Override
     protected void onDestroy() {
         super.onDestroy();
         //在Activity被关闭后，关闭Service

@@ -104,8 +104,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 bundle.putString("userCollege", studentList.get(0).getStu_college());
                                 Intent i = new Intent();
                                 i.putExtras(bundle);
-                                i.setClass(LoginActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                i.setClass(LoginActivity.this, MainActivity.class);
                                 startActivity(i);
+                                finish();
                             } else {
                                 Looper.prepare();
                                 Toast toast = Toast.makeText(getApplicationContext(), "账号或密码错误，请重试", Toast.LENGTH_LONG);
@@ -131,8 +132,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 bundle.putString("userCollege", teacherList.get(0).getTec_department());
                                 Intent i = new Intent();
                                 i.putExtras(bundle);
-                                i.setClass(LoginActivity.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                                i.setClass(LoginActivity.this, MainActivity.class);
                                 startActivity(i);
+                                finish();
                             } else {
                                 Looper.prepare();
                                 Toast toast = Toast.makeText(getApplicationContext(), "账号或密码错误，请重试", Toast.LENGTH_LONG);

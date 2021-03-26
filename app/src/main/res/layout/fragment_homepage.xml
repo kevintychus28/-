@@ -91,7 +91,7 @@
 
 
     <RelativeLayout
-        android:id="@+id/re_xiangce"
+        android:id="@+id/re_countdown"
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:background="#ffffff"
@@ -99,7 +99,7 @@
         android:paddingLeft="12dp">
 
         <ImageView
-            android:id="@+id/iv_xiangce"
+            android:id="@+id/iv_countdown"
             android:layout_width="26dp"
             android:layout_height="26dp"
             android:layout_alignParentLeft="true"
@@ -112,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/iv_xiangce"
+            android:layout_toRightOf="@id/iv_countdown"
             android:text="考试倒计时"
             android:textColor="#353535"
             android:textSize="16sp" />
@@ -127,7 +127,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/re_aboutwe"
+        android:id="@+id/re_map"
         android:layout_width="match_parent"
         android:layout_height="58dp"
         android:background="#ffffff"
@@ -135,7 +135,7 @@
         android:paddingLeft="12dp">
 
         <ImageView
-            android:id="@+id/iv_shoucang"
+            android:id="@+id/iv_map"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentLeft="true"
@@ -148,7 +148,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/iv_shoucang"
+            android:layout_toRightOf="@id/iv_map"
             android:text="校园地图"
             android:textColor="#353535"
             android:textSize="16sp" />
@@ -156,7 +156,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/re_help"
+        android:id="@+id/re_about"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="20dp"
@@ -165,7 +165,7 @@
         android:paddingLeft="12dp">
 
         <ImageView
-            android:id="@+id/iv_money_bag"
+            android:id="@+id/iv_about"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentLeft="true"
@@ -178,7 +178,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/iv_money_bag"
+            android:layout_toRightOf="@id/iv_about"
             android:text="关于"
             android:textColor="#353535"
             android:textSize="16sp" />
@@ -193,7 +193,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/tuichu"
+        android:id="@+id/re_exit"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginTop="10dp"
@@ -202,7 +202,7 @@
         android:paddingLeft="12dp">
 
         <ImageView
-            android:id="@+id/iv_setting"
+            android:id="@+id/iv_exit"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentLeft="true"
@@ -215,7 +215,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/iv_setting"
+            android:layout_toRightOf="@id/iv_exit"
             android:text="退出登入"
             android:textColor="#353535"
             android:textSize="16sp" />

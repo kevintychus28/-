@@ -11,7 +11,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CMS">
-
         <activity
             android:name=".activity.LoginActivity"
             android:screenOrientation="portrait">
@@ -21,19 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".activity.MapActivity"
+            android:screenOrientation="portrait"></activity>
 
-        </activity>
+        <service android:name=".util.AlertService"></service>
 
-        <service android:name=".util.AlertService" >
-        </service>
-
-        <receiver android:name=".util.AlarmReceiver" >
-        </receiver>
-
+        <receiver android:name=".util.AlarmReceiver"></receiver>
     </application>
 
 </manifest>
