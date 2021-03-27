@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -17,6 +18,8 @@ import com.example.cms.R;
 import com.example.cms.activity.LoginActivity;
 import com.example.cms.activity.MainActivity;
 import com.example.cms.activity.MapActivity;
+import com.example.cms.adapter.ExamTimeListAdapter;
+import com.example.cms.adapter.ScoreListAdapter;
 
 public class HomePageFragment extends Fragment {
 
@@ -28,6 +31,9 @@ public class HomePageFragment extends Fragment {
     private RelativeLayout re_map;
     private RelativeLayout re_about;
     private RelativeLayout re_exit;
+
+    ExamTimeListAdapter examTimeListAdapter;
+    ListView examDetail;
 
     public HomePageFragment() {
     }
@@ -55,7 +61,7 @@ public class HomePageFragment extends Fragment {
         re_countdown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                examDialog();
             }
         });
         // 地图点击事件
@@ -80,6 +86,20 @@ public class HomePageFragment extends Fragment {
             }
         });
     }
+
+
+    // 展示考试倒计时弹窗
+    public void examDialog() {
+        // 装入自定义View ==> R.layout.dialog_note
+        AlertDialog.Builder examDialog = new AlertDialog.Builder(mContext);
+        View dialogView = LayoutInflater.from(mContext).inflate(R.layout.dialog_exam, null);
+        examTimeListAdapter = new ExamTimeListAdapter(mContext, mContext.getExamTimeList());
+        examDetail = dialogView.findViewById(R.id.examDetail);
+        examDetail.setAdapter(examTimeListAdapter);
+        examDialog.setView(dialogView);
+        examDialog.show();
+    }
+
 
     // 地图
     private void showMapDialog() {

@@ -46,12 +46,11 @@ public class MapActivity extends AppCompatActivity {
          * float withs=bitmap.getHeight()
          * */
         //1这里是先声明一个矩阵来容纳图片的矩阵
-        Matrix MatrixImags = imageView.getImageMatrix();
-        //2把矩阵移动 （ postTranslate）         这里就用到了我们获取的屏幕高宽
-        //屏幕高，宽度 /2- 图片高，宽/2
-        MatrixImags.postTranslate(((ScreenW / 2) - (bitmap.getWidth() / 2)), ((ScreenH / 2) - (bitmap.getHeight() / 2)));
+        Matrix MatrixImage = imageView.getImageMatrix();
+        //2把矩阵移动（postTranslate）：(屏幕宽/2)-(图片宽/2)，(屏幕高/2)-(图片高/2)
+        MatrixImage.postTranslate(((ScreenW / 2) - (bitmap.getWidth() / 2)), ((ScreenH / 2) - (bitmap.getHeight() / 2)));
         //在把变化后的矩阵给设置进去
-        imageView.setImageMatrix(MatrixImags);
+        imageView.setImageMatrix(MatrixImage);
         //调用图片触摸事件
         imageView.setOnTouchListener(new Touch_picture());
     }
@@ -76,7 +75,7 @@ public class MapActivity extends AppCompatActivity {
     //1声明：当前矩阵；
     private Matrix startMx = new Matrix();
     //2声明: 变化后矩阵：
-    private Matrix changegMx = new Matrix();
+    private Matrix changeMx = new Matrix();
     //3声明：双指按下时的点：
     private PointF startPF = new PointF();
     //4声明 ：双指按下时的 两指间的中点距离，也是缩放地1中心
@@ -107,7 +106,7 @@ public class MapActivity extends AppCompatActivity {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            //判断 获取的 触摸动作 与 触摸点动作（标志）是 那个动作或者动作（标志）：
+            //判断 获取的 触摸动作 与 触摸点动作（标志）是 哪个动作或者动作（标志）：
             /*
              *动作判断事件分别为：
              * 1： MotionEvent.ACTION_DOWN  触摸动作（单指）down
@@ -117,59 +116,67 @@ public class MapActivity extends AppCompatActivity {
              * 5： MotionEvent.ACTION_POINTER_DOWN    触摸点的动作（标志）（双指）down
              * */
             switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                //（单指）down
                 case MotionEvent.ACTION_DOWN:
                     /*
-                     * 标志量给1 将图片的矩阵赋给startMx  把开始的点的x，y值赋给startPF
+                     * 标志量给1
+                     * 将图片的矩阵赋给startMx
+                     * 把开始的点的x，y值赋给startPF
                      * */
                     sign = 1;
                     startMx.set(imageView.getImageMatrix());
                     startPF.set(event.getX(), event.getY());
                     break;
+                //（单指）up
                 case MotionEvent.ACTION_UP:
                     //标志量给0
                     sign = 0;
+                    break;
+                //（双指）up
                 case MotionEvent.ACTION_POINTER_UP:
                     //标志量给0
                     sign = 0;
                     break;
+                //（双指）down
                 case MotionEvent.ACTION_POINTER_DOWN:
-                    //标志量给2  把开始的矩阵设置给变化后的矩阵  changegMx.set(startMx);
-                    // 获取点距给startDistance
-                    //获取开始的点与点 中点距给 miPF
+                    // 标志量给2
                     sign = 2;
-                    changegMx.set(startMx);
+                    // 把开始的矩阵设置给变化后的矩阵
+                    changeMx.set(startMx);
+                    // 获取两指点距给startDistance
                     startDistance = getDistance(event);
+                    // 获取两指点距的中心坐标给miPF
                     miPF = getDistanceMid(event);
                     break;
+                // 手指移动move
                 case MotionEvent.ACTION_MOVE:
                     //这里才是重点：
-                    //判断Sion 应该做什么
+                    //利用标志sign，判断应该做什么
                     if (sign == 1) {
                         //移动
                         //把开始的矩阵设置给变化后的矩阵
-                        //获取当前 变化的x ，y 值设置到移动矩阵的方法中 changegMx.postTranslate(offx, offy);
-                        //移动变化后的矩阵
+                        changeMx.set(startMx);
+                        //获取变化的x ，y 值
                         float offx = event.getX() - startPF.x;
                         float offy = event.getY() - startPF.y;
-                        changegMx.set(startMx);
-                        changegMx.postTranslate(offx, offy);
+                        //设置到移动矩阵的方法中
+                        changeMx.postTranslate(offx, offy);
                     } else if (sign == 2) {
                         //缩放
                         //把开始的矩阵设置给变化后的矩阵
-                        //获取当前的移动距离 给现在的dismove
+                        changeMx.set(startMx);
+                        //获取当前的移动距离，给现在的disMove
+                        float disMove = getDistance(event);
                         //计算缩放倍数  现在的距离/以前的距离=倍数=scale
-                        //按倍数 （x，y）的倍数与 x点，y点缩放 changegMx.postScale(scale, scale, miPF.x, miPF.y);
-                        float dismove = getDistance(event);
-                        float scale = dismove / startDistance;
-                        changegMx.set(startMx);
-                        changegMx.postScale(scale, scale, miPF.x, miPF.y);
+                        float scale = disMove / startDistance;
+                        //按倍数 （x，y）的倍数与 x点，y点缩放 changeMx.postScale(scale, scale, miPF.x, miPF.y);
+                        changeMx.postScale(scale, scale, miPF.x, miPF.y);
                     }
                     break;
             }
             //设置图片的矩阵为变化后的矩阵
-            imageView.setImageMatrix(changegMx);
+            imageView.setImageMatrix(changeMx);
             return true;
-
         }
 
     }

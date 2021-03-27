@@ -1,15 +1,11 @@
 package com.example.cms.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
 import androidx.multidex.MultiDex;
 
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,7 +39,8 @@ import com.example.cms.adapter.ScoreListAdapter;
 import com.example.cms.entity.Course;
 import com.example.cms.entity.Note;
 import com.example.cms.entity.Roster;
-import com.example.cms.util.AlertService;
+import com.example.cms.util.AlarmService;
+import com.example.cms.util.ExamService;
 import com.example.cms.view.HomePageFragment;
 import com.example.cms.view.NotesFragment;
 import com.example.cms.view.ScheduleFragment;
@@ -106,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SwipeListView noteDetail;
 
     // 个人主页
-
+    private List<Course> examTimeList;// 展示的成绩
 
 
 //    在onCreate()之前你不能getIntent() – 那时根本就没有Intent可用.我相信任何需要Context的事情都是如此.
@@ -178,6 +175,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.bottom_bar_4:
                 setFragments(bottom_bar_4);
+                getExamTime(getUserID(), getIdentity());
                 break;
         }
     }
@@ -369,20 +367,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void initWeekPanel(LinearLayout ll, List<Course> data) {
 
         if (ll == null || data == null || data.size() < 1) return;
+        // 清空旧课程
         ll.removeAllViews();
         itemHeight = getResources().getDimensionPixelSize(R.dimen.weekItemHeight);
         marTop = getResources().getDimensionPixelSize(R.dimen.weekItemMarTop);
         marLeft = getResources().getDimensionPixelSize(R.dimen.weekItemMarLeft);
+        // 当天的上一个插入的课
         Course pre = data.get(0);
         for (int i = 0; i < data.size(); i++) {
+            // 现在要插入的课
             Course c = data.get(i);
             int cPeriod = Integer.parseInt(c.getCou_period());
             int prePeriod = Integer.parseInt(pre.getCou_period());
             TextView tv = new TextView(this);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, itemHeight);
-            if (i > 0) {
+            if (i > 0) {// 获取并设置离上一门课程的距离
                 lp.setMargins(marLeft, ((cPeriod - prePeriod - 1) * (itemHeight + marTop) + marTop), 0, 0);
-            } else {
+            } else {// 获取并设置离顶部的距离
                 lp.setMargins(marLeft, (cPeriod - 1) * (itemHeight + marTop) + marTop, 0, 0);
             }
             tv.setLayoutParams(lp);
@@ -390,15 +391,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tv.setGravity(Gravity.CENTER_HORIZONTAL);
             tv.setTextSize(12);
             tv.setTextColor(getResources().getColor(R.color.courseTextColor));
-            tv.setText(c.getCou_name() + "\n" + c.getCou_classroom() + "\n" + c.getCou_teacher());
+            tv.setText(c.getCou_name() + "\n" + c.getCou_classroom() + "\n" + c.getCou_teacher());// 设置课程信息
             //tv.setBackgroundColor(getResources().getColor(R.color.classIndex));
             tv.setBackground(getResources().getDrawable(R.drawable.course_shape));
+            // 添加点击课程，显示课程信息及提醒的弹窗的事件
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showCourseDialog(c);
                 }
             });
+            // 将该课程插入到当天课程表中
             ll.addView(tv);
             Log.e(TAG, c.getCou_name());
             pre = c;
@@ -432,7 +435,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     toast.show();
                 } else {
                     Log.e(TAG, "该课程开始时间为：" + course.getStart_time());
-                    intent = new Intent(MainActivity.this, AlertService.class);
+                    intent = new Intent(MainActivity.this, AlarmService.class);
                     intent.putExtra("start_time", course.getStart_time());
                     //开启关闭Service
                     startService(intent);
@@ -685,7 +688,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 // 获取EditView中的输入内容
                 String grade = et_grade.getText().toString();
-                if (Integer.parseInt(grade) > 0 && Integer.parseInt(grade) < 100) {
+                if (Integer.parseInt(grade) >= 0 && Integer.parseInt(grade) <= 100) {
                     Log.e(TAG, "userID: " + getUserID());
                     Log.e(TAG, "学生姓名为: " + studentName);
                     Log.e(TAG, "成绩为: " + grade);
@@ -956,13 +959,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //    <<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<--- 我的页面 --->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>
 
+    /**
+     * 获取考试时间
+     *
+     * @param userID
+     * @param identify
+     */
+    public void getExamTime(String userID, String identify) {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                ExamService examService = new ExamService();
+                String json = examService.getExamTime(userID, identify);
+                Log.e(TAG, "考试时间JSON数据: " + json);
+                // 把json数据转换为List
+                examTimeList = JSONObject.parseArray(json, Course.class);
+                Log.e(TAG, "examTimeList: " + examTimeList);
+            }
+        }.start();
+    }
 
+    public List<Course> getExamTimeList(){
+        return examTimeList;
+    }
 
-
-
-
-
-        @Override
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         //在Activity被关闭后，关闭Service

@@ -13,7 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class AlertService extends Service {
+public class AlarmService extends Service {
 
 
     private static final String TAG = "Log日志";

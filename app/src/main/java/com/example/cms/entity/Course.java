@@ -6,8 +6,10 @@ public class Course {
     private String Cou_classroom;
     private String Cou_weekday;
     private String Cou_period;
-    private String grade;
+    private String Cou_exam_time;
     private String start_time;
+    private String grade;
+
 
     public Course() {
     }
@@ -68,6 +70,14 @@ public class Course {
         this.start_time = start_time;
     }
 
+    public String getCou_exam_time() {
+        return Cou_exam_time;
+    }
+
+    public void setCou_exam_time(String cou_exam_time) {
+        Cou_exam_time = cou_exam_time;
+    }
+
     @Override
     public String toString() {
         return "Course{" +
@@ -76,8 +86,9 @@ public class Course {
                 ", Cou_classroom='" + Cou_classroom + '\'' +
                 ", Cou_weekday='" + Cou_weekday + '\'' +
                 ", Cou_period='" + Cou_period + '\'' +
-                ", grade='" + grade + '\'' +
+                ", Cou_exam_time='" + Cou_exam_time + '\'' +
                 ", start_time='" + start_time + '\'' +
+                ", grade='" + grade + '\'' +
                 '}';
     }
 }

@@ -27,7 +27,7 @@
             android:name=".activity.MapActivity"
             android:screenOrientation="portrait"></activity>
 
-        <service android:name=".util.AlertService"></service>
+        <service android:name=".util.AlarmService"></service>
 
         <receiver android:name=".util.AlarmReceiver"></receiver>
     </application>
