@@ -29,8 +29,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     Student stu;
     Teacher tec;
-
+    //区分学生和老师
     private Boolean is_stu = true;
+    //管理员
+    int flag = 0;
 
     private RadioButton student;
     private RadioButton teacher;
@@ -71,12 +73,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()) {
             case R.id.is_student:
                 is_stu = true;
+                flag = 0;
                 break;
             case R.id.is_teacher:
                 is_stu = false;
+                flag++;
+                if (flag >= 5) {
+                    Intent i = new Intent();
+                    i.setClass(LoginActivity.this, AdminActivity.class);
+                    startActivity(i);
+                }
                 break;
             case R.id.btn_login:
-                new Thread(){
+                new Thread() {
                     @Override
                     public void run() {
                         super.run();

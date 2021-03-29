@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <GridView
+        android:id="@+id/gridViewDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:numColumns="2"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                style="@style/select_flex_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="学生" />
+
+            <RadioButton
+                style="@style/select_flex_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="教师" />
+
+            <RadioButton
+                style="@style/select_flex_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="课程" />
+        </RadioGroup>
+    </LinearLayout>
+
+</LinearLayout>

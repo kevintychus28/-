@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/user1" />
+
+    <TextView
+        android:id="@+id/stu_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="学号" />
+
+    <TextView
+        android:id="@+id/stu_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="姓名" />
+
+    <TextView
+        android:id="@+id/stu_sex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="性别" />
+
+    <TextView
+        android:id="@+id/stu_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="出生日期" />
+
+    <TextView
+        android:id="@+id/stu_class"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="班级" />
+
+    <TextView
+        android:id="@+id/stu_college"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="学院" />
+
+
+
+</LinearLayout>
