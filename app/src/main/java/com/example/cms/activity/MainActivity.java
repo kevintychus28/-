@@ -413,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 展示单个课程的信息
      */
     public void showCourseDialog(Course course) {
-        // 装入自定义View ==> R.layout.dialog_course
+        // 装入自定义View ==> R.layout.dialog_course.xml
         AlertDialog.Builder showCourseDialog = new AlertDialog.Builder(MainActivity.this);
         View dialogView = LayoutInflater.from(MainActivity.this).inflate(R.layout.dialog_course, null);
         showCourseDialog.setTitle("课程信息");

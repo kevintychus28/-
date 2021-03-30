@@ -33,7 +33,9 @@ public class AdminService {
     String parameter;
 
     /**
+     *
      * 学生
+     *
      **/
     public String getStudent() {
         parameter = "?type=get";
@@ -93,53 +95,119 @@ public class AdminService {
         return doGet(url);
     }
 
-//    /**
-//     * 老师
-//     **/
-//    public String getTeacher() {
-//        url = "";
-//        return doGet(url);
-//    }
-//
-//    public String addTeacher() {
-//        url = "";
-//        return doPost(url);
-//    }
-//
-//    public String editTeacher() {
-//        url = "";
-//        return doPost(url);
-//    }
-//
-//    public String deleteTeacher() {
-//        url = "";
-//        return doGet(url);
-//    }
-//
-//    /**
-//     * 课程
-//     **/
-//    public String getCourse() {
-//        url = "";
-//        return doGet(url);
-//    }
-//
-//    public String addCourse() {
-//        url = "";
-//        return doPost(url);
-//    }
-//
-//    public String editCourse() {
-//        url = "";
-//        return doPost(url);
-//    }
-//
-//    public String deleteCourse() {
-//        url = "";
-//        return doGet(url);
-//    }
+    /**
+     *
+     * 老师
+     *
+     **/
+    public String getTeacher() {
+        parameter = "?type=get";
+        url = tec_url + parameter;
+        return doGet(url);
+    }
 
+    public Boolean addTeacher(String tec_id, String tec_password, String tec_name, String tec_department) {
+        url = tec_url;
+        NameValuePair pair1 = new BasicNameValuePair("tec_id", tec_id);
+        NameValuePair pair2 = new BasicNameValuePair("tec_password", tec_password);
+        NameValuePair pair3 = new BasicNameValuePair("tec_name", tec_name);
+        NameValuePair pair4 = new BasicNameValuePair("tec_department", tec_department);
+        NameValuePair pair5 = new BasicNameValuePair("type", "add");
 
+        List<NameValuePair> pairList = new ArrayList<NameValuePair>();
+        pairList.add(pair1);
+        pairList.add(pair2);
+        pairList.add(pair3);
+        pairList.add(pair4);
+        pairList.add(pair5);
+        return doPost(url, pairList);
+    }
+
+    public Boolean editTeacher(String tec_id, String tec_password, String tec_name, String tec_department) {
+        url = tec_url;
+        NameValuePair pair1 = new BasicNameValuePair("tec_id", tec_id);
+        NameValuePair pair2 = new BasicNameValuePair("tec_password", tec_password);
+        NameValuePair pair3 = new BasicNameValuePair("tec_name", tec_name);
+        NameValuePair pair4 = new BasicNameValuePair("tec_department", tec_department);
+        NameValuePair pair5 = new BasicNameValuePair("type", "edit");
+
+        List<NameValuePair> pairList = new ArrayList<NameValuePair>();
+        pairList.add(pair1);
+        pairList.add(pair2);
+        pairList.add(pair3);
+        pairList.add(pair4);
+        pairList.add(pair5);
+        return doPost(url, pairList);
+    }
+
+    public String deleteTeacher(String tec_id) {
+        parameter = "?type=delete&tec_id=" + tec_id;
+        url = tec_url + parameter;
+        return doGet(url);
+    }
+
+    /**
+     *
+     * 课程
+     *
+     **/
+    public String getCourse() {
+        parameter = "?type=get";
+        url = cou_url + parameter;
+        return doGet(url);
+    }
+
+    public Boolean addCourse(String cou_name, String cou_teacher, String cou_classroom, String cou_weekday, String cou_period, String cou_exam_time) {
+        url = cou_url;
+        NameValuePair pair1 = new BasicNameValuePair("cou_name", cou_name);
+        NameValuePair pair2 = new BasicNameValuePair("cou_teacher", cou_teacher);
+        NameValuePair pair3 = new BasicNameValuePair("cou_classroom", cou_classroom);
+        NameValuePair pair4 = new BasicNameValuePair("cou_weekday", cou_weekday);
+        NameValuePair pair5 = new BasicNameValuePair("cou_period", cou_period);
+        NameValuePair pair6 = new BasicNameValuePair("cou_exam_time", cou_exam_time);
+        NameValuePair pair7 = new BasicNameValuePair("type", "add");
+
+        List<NameValuePair> pairList = new ArrayList<NameValuePair>();
+        pairList.add(pair1);
+        pairList.add(pair2);
+        pairList.add(pair3);
+        pairList.add(pair4);
+        pairList.add(pair5);
+        pairList.add(pair6);
+        pairList.add(pair7);
+        return doPost(url, pairList);
+    }
+
+    public Boolean editCourse(String cou_id, String cou_name, String cou_teacher, String cou_classroom, String cou_weekday, String cou_period, String cou_exam_time) {
+        url = cou_url;
+        NameValuePair pair1 = new BasicNameValuePair("cou_id", cou_id);
+        NameValuePair pair2 = new BasicNameValuePair("cou_name", cou_name);
+        NameValuePair pair3 = new BasicNameValuePair("cou_teacher", cou_teacher);
+        NameValuePair pair4 = new BasicNameValuePair("cou_classroom", cou_classroom);
+        NameValuePair pair5 = new BasicNameValuePair("cou_weekday", cou_weekday);
+        NameValuePair pair6 = new BasicNameValuePair("cou_period", cou_period);
+        NameValuePair pair7 = new BasicNameValuePair("cou_exam_time", cou_exam_time);
+        NameValuePair pair8 = new BasicNameValuePair("type", "add");
+
+        List<NameValuePair> pairList = new ArrayList<NameValuePair>();
+        pairList.add(pair1);
+        pairList.add(pair2);
+        pairList.add(pair3);
+        pairList.add(pair4);
+        pairList.add(pair5);
+        pairList.add(pair6);
+        pairList.add(pair7);
+        pairList.add(pair8);
+        return doPost(url, pairList);
+    }
+
+    public String deleteCourse(String cou_id) {
+        parameter = "?type=delete&cou_id=" + cou_id;
+        url = cou_url + parameter;
+        return doGet(url);
+    }
+
+//  <<---<<---<<---<<---<<---<<--- method --->>--->>--->>--->>--->>--->>
     public String doGet(String url) {
         try {
             Log.e(TAG, "发送get请求");

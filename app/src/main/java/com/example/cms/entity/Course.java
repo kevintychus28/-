@@ -1,6 +1,7 @@
 package com.example.cms.entity;
 
 public class Course {
+    private String Cou_id;
     private String Cou_name;
     private String Cou_teacher;
     private String Cou_classroom;
@@ -12,6 +13,14 @@ public class Course {
 
 
     public Course() {
+    }
+
+    public String getCou_id() {
+        return Cou_id;
+    }
+
+    public void setCou_id(String cou_id) {
+        Cou_id = cou_id;
     }
 
     public String getCou_name() {
