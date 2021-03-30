@@ -1,16 +1,30 @@
 package com.example.cms.adapter;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.graphics.Color;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cms.R;
-import com.example.cms.entity.Roster;
+import com.example.cms.activity.AdminActivity;
+import com.example.cms.activity.MainActivity;
 import com.example.cms.entity.Student;
+import com.example.cms.util.AdminService;
 
 import java.util.List;
 
@@ -19,6 +33,7 @@ public class GirdViewStudentAdapter extends BaseAdapter {
     private static final String TAG = "Log日志";
     private List<Student> studentList;
     private Context context;
+
 
     public GirdViewStudentAdapter(Context context, List<Student> list) {
         this.context = context;
@@ -52,6 +67,7 @@ public class GirdViewStudentAdapter extends BaseAdapter {
             holder = new GirdViewStudentAdapter.GridViewHolder();
             // 找控件
             holder.stu_name = (TextView) convertView.findViewById(R.id.stu_name);
+            holder.stu_password = (TextView) convertView.findViewById(R.id.stu_password);
             holder.stu_id = (TextView) convertView.findViewById(R.id.stu_id);
             holder.stu_sex = (TextView) convertView.findViewById(R.id.stu_sex);
             holder.stu_date = (TextView) convertView.findViewById(R.id.stu_date);
@@ -68,6 +84,7 @@ public class GirdViewStudentAdapter extends BaseAdapter {
 
         // 设置属性
         holder.stu_name.setText(student.getStu_name());
+        holder.stu_password.setText(student.getStu_password());
         holder.stu_id.setText(student.getStu_id());
         holder.stu_sex.setText(student.getStu_sex());
         holder.stu_date.setText(student.getStu_date());
@@ -79,10 +96,14 @@ public class GirdViewStudentAdapter extends BaseAdapter {
 
     class GridViewHolder {
         TextView stu_id;
+        TextView stu_password;
         TextView stu_name;
         TextView stu_sex;
         TextView stu_date;
         TextView stu_class;
         TextView stu_college;
     }
+
+
+
 }

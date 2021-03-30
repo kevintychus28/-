@@ -73,7 +73,7 @@ public class AdminService {
         NameValuePair pair5 = new BasicNameValuePair("stu_date", stu_date);
         NameValuePair pair6 = new BasicNameValuePair("stu_class", stu_class);
         NameValuePair pair7 = new BasicNameValuePair("stu_college", stu_college);
-        NameValuePair pair8 = new BasicNameValuePair("type", "delete");
+        NameValuePair pair8 = new BasicNameValuePair("type", "edit");
 
         List<NameValuePair> pairList = new ArrayList<NameValuePair>();
         pairList.add(pair1);
@@ -142,7 +142,7 @@ public class AdminService {
 
     public String doGet(String url) {
         try {
-            Log.e(TAG, "发送获取成绩请求");
+            Log.e(TAG, "发送get请求");
             // 创建请求方法的实例，并指定请求URL
             HttpGet httpGet = new HttpGet(url);
             // 创建HttpClient对象
@@ -174,7 +174,7 @@ public class AdminService {
 
     public Boolean doPost(String url, List<NameValuePair> pairList) {
         try {
-            Log.e(TAG, "发起修改成绩请求");
+            Log.e(TAG, "发起post请求");
             // 创建请求方法的实例，并指定请求URL
             HttpPost httpPost = new HttpPost(url);
             // 设置请求体的内容参数
@@ -200,6 +200,7 @@ public class AdminService {
                 while (null != (temp = reader.readLine())) {
                     sb.append(temp);
                 }
+                Log.e(TAG, "响应：" + sb);
                 if (sb.toString().equals("success")) {
                     return true;
                 }

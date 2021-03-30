@@ -16,6 +16,12 @@
         android:text="学号" />
 
     <TextView
+        android:id="@+id/stu_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="密码" />
+
+    <TextView
         android:id="@+id/stu_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,7 +50,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="学院" />
-
 
 
 </LinearLayout>
