@@ -3,6 +3,7 @@ package com.example.cms.activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -11,11 +12,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
@@ -28,6 +34,8 @@ import com.example.cms.entity.Student;
 import com.example.cms.entity.Teacher;
 import com.example.cms.util.AdminService;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class AdminActivity extends AppCompatActivity {
@@ -43,12 +51,15 @@ public class AdminActivity extends AppCompatActivity {
     private Button add_entity;
 
     private List<Student> studentList;
+    private List<String> studentNameList;
     private GirdViewStudentAdapter GirdViewStudentAdapter;
 
     private List<Teacher> teacherList;
+    private List<String> teacherNameList;
     private GirdViewTeacherAdapter girdViewTeacherAdapter;
 
     private List<Course> courseList;
+    private List<String> courseNameList;
     private GirdViewCourseAdapter girdViewCourseAdapter;
 
 
@@ -116,11 +127,18 @@ public class AdminActivity extends AppCompatActivity {
                 super.run();
                 AdminService adminService = new AdminService();
                 String json = adminService.getStudent();
-                studentList = JSONObject.parseArray(json, Student.class);
-                Log.e(TAG, "studentList: " + studentList);
-                Message msg = Message.obtain();
-                msg.what = 101;
-                mHandler.sendMessage(msg);
+                if (!json.equals(null)) {
+                    studentList = JSONObject.parseArray(json, Student.class);
+                    Log.e(TAG, "studentList: " + studentList);
+                    // 获取所有学生名
+                    studentNameList = new ArrayList<>();
+                    for (int j = 0; j < studentList.size(); j++) {
+                        studentNameList.add(studentList.get(j).getStu_name());
+                    }
+                    Message msg = Message.obtain();
+                    msg.what = 101;
+                    mHandler.sendMessage(msg);
+                }
             }
         }.start();
     }
@@ -202,6 +220,9 @@ public class AdminActivity extends AppCompatActivity {
 
     private String studentSex = "男";
 
+
+    TextView tv_studentDate;
+
     /**
      * 弹窗-学生信息
      **/
@@ -220,7 +241,7 @@ public class AdminActivity extends AppCompatActivity {
         RadioGroup rg_studentSex = (RadioGroup) dialogView.findViewById(R.id.rg_studentSex);
         RadioButton rb_studentMan = (RadioButton) dialogView.findViewById(R.id.rb_studentMan);
         RadioButton rb_studentWoman = (RadioButton) dialogView.findViewById(R.id.rb_studentWoman);
-        EditText et_studentDate = (EditText) dialogView.findViewById(R.id.et_studentDate);
+        tv_studentDate = (TextView) dialogView.findViewById(R.id.tv_studentDate);
         EditText et_studentClass = (EditText) dialogView.findViewById(R.id.et_studentClass);
         EditText et_studentCollege = (EditText) dialogView.findViewById(R.id.et_studentCollege);
         Button btn_studentDelete = (Button) dialogView.findViewById(R.id.btn_studentDelete);
@@ -245,7 +266,7 @@ public class AdminActivity extends AppCompatActivity {
                     break;
             }
             studentSex = student.getStu_sex();
-            et_studentDate.setText(student.getStu_date());
+            tv_studentDate.setText(student.getStu_date());
             et_studentClass.setText(student.getStu_class());
             et_studentCollege.setText(student.getStu_college());
         } else if (type.equals("add")) {
@@ -268,6 +289,13 @@ public class AdminActivity extends AppCompatActivity {
                 }
             }
         });
+        // 设置出生日期
+        tv_studentDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog("出生日期");
+            }
+        });
         // 删除学生信息
         btn_studentDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -284,15 +312,15 @@ public class AdminActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(et_studentID.getText())
                         && !TextUtils.isEmpty(et_studentPassword.getText())
                         && !TextUtils.isEmpty(et_studentName.getText())
-                        && !TextUtils.isEmpty(et_studentDate.getText())
+                        && !TextUtils.isEmpty(tv_studentDate.getText())
                         && !TextUtils.isEmpty(et_studentClass.getText())
                         && !TextUtils.isEmpty(et_studentCollege.getText())) {
                     if (type.equals("edit")) {
                         Log.e(TAG, "修改学生信息 ");
-                        editStudent(finalStudentID, et_studentPassword.getText().toString(), et_studentName.getText().toString(), studentSex, et_studentDate.getText().toString(), et_studentClass.getText().toString(), et_studentCollege.getText().toString());
+                        editStudent(finalStudentID, et_studentPassword.getText().toString(), et_studentName.getText().toString(), studentSex, tv_studentDate.getText().toString(), et_studentClass.getText().toString(), et_studentCollege.getText().toString());
                     } else {
                         Log.e(TAG, "新增学生信息 ");
-                        addStudent(et_studentID.getText().toString(), et_studentPassword.getText().toString(), et_studentName.getText().toString(), studentSex, et_studentDate.getText().toString(), et_studentClass.getText().toString(), et_studentCollege.getText().toString());
+                        addStudent(et_studentID.getText().toString(), et_studentPassword.getText().toString(), et_studentName.getText().toString(), studentSex, tv_studentDate.getText().toString(), et_studentClass.getText().toString(), et_studentCollege.getText().toString());
                     }
                     showStudentDialog.dismiss();
                 } else {
@@ -326,10 +354,17 @@ public class AdminActivity extends AppCompatActivity {
                 super.run();
                 AdminService adminService = new AdminService();
                 String json = adminService.getTeacher();
-                teacherList = JSONObject.parseArray(json, Teacher.class);
-                Message msg = Message.obtain();
-                msg.what = 201;
-                mHandler.sendMessage(msg);
+                if (!json.equals(null)) {
+                    teacherList = JSONObject.parseArray(json, Teacher.class);
+                    // 获取所有教师名
+                    teacherNameList = new ArrayList<>();
+                    for (int j = 0; j < teacherList.size(); j++) {
+                        teacherNameList.add(teacherList.get(j).getTec_name());
+                    }
+                    Message msg = Message.obtain();
+                    msg.what = 201;
+                    mHandler.sendMessage(msg);
+                }
             }
         }.start();
     }
@@ -498,10 +533,17 @@ public class AdminActivity extends AppCompatActivity {
                 super.run();
                 AdminService adminService = new AdminService();
                 String json = adminService.getCourse();
-                courseList = JSONObject.parseArray(json, Course.class);
-                Message msg = Message.obtain();
-                msg.what = 301;
-                mHandler.sendMessage(msg);
+                if (!json.equals(null)) {
+                    courseList = JSONObject.parseArray(json, Course.class);
+                    // 获取所有课程名
+                    courseNameList = new ArrayList<>();
+                    for (int j = 0; j < courseList.size(); j++) {
+                        courseNameList.add(courseList.get(j).getCou_name());
+                    }
+                    Message msg = Message.obtain();
+                    msg.what = 301;
+                    mHandler.sendMessage(msg);
+                }
             }
         }.start();
     }
@@ -582,6 +624,8 @@ public class AdminActivity extends AppCompatActivity {
     }
 
 
+    TextView tv_courseExamTime;
+
     /**
      * 弹窗-课程信息
      **/
@@ -595,11 +639,13 @@ public class AdminActivity extends AppCompatActivity {
 
         // 展示课程信息
         EditText et_courseName = (EditText) dialogView.findViewById(R.id.et_courseName);
-        EditText et_courseTeacher = (EditText) dialogView.findViewById(R.id.et_courseTeacher);
+        Spinner sp_courseTeacher = (Spinner) dialogView.findViewById(R.id.sp_courseTeacher);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, teacherNameList);
+        sp_courseTeacher.setAdapter(adapter);
         EditText et_courseClassroom = (EditText) dialogView.findViewById(R.id.et_courseClassroom);
         EditText et_courseWeek = (EditText) dialogView.findViewById(R.id.et_courseWeek);
         EditText et_coursePeriod = (EditText) dialogView.findViewById(R.id.et_coursePeriod);
-        EditText et_courseExamTime = (EditText) dialogView.findViewById(R.id.et_courseExamTime);
+        tv_courseExamTime = (TextView) dialogView.findViewById(R.id.tv_courseExamTime);
         Button btn_courseDelete = (Button) dialogView.findViewById(R.id.btn_courseDelete);
         Button btn_courseEdit = (Button) dialogView.findViewById(R.id.btn_courseEdit);
 
@@ -607,16 +653,22 @@ public class AdminActivity extends AppCompatActivity {
 
         if (type.equals("edit")) {
             et_courseName.setText(course.getCou_name());
-            et_courseTeacher.setText(course.getCou_teacher());
+            setSpinnerItemSelectedByValue(sp_courseTeacher, course.getCou_teacher());
             et_courseClassroom.setText(course.getCou_classroom());
             et_courseWeek.setText(course.getCou_weekday());
             et_coursePeriod.setText(course.getCou_period());
-            et_courseExamTime.setText(course.getCou_exam_time());
+            tv_courseExamTime.setText(course.getCou_exam_time());
         } else if (type.equals("add")) {
             btn_courseDelete.setVisibility(View.INVISIBLE);
             btn_courseEdit.setText("提交");
         }
-
+        // 设置考试时间
+        tv_courseExamTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePickerDialog("考试时间");
+            }
+        });
         // 删除课程信息
         btn_courseDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -630,25 +682,78 @@ public class AdminActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!TextUtils.isEmpty(et_courseName.getText())
-                        && !TextUtils.isEmpty(et_courseTeacher.getText())
                         && !TextUtils.isEmpty(et_courseClassroom.getText())
                         && !TextUtils.isEmpty(et_courseWeek.getText())
                         && !TextUtils.isEmpty(et_coursePeriod.getText())
-                        && !TextUtils.isEmpty(et_courseExamTime.getText())) {
+                        && !TextUtils.isEmpty(tv_courseExamTime.getText())
+                        && 1 <= Integer.parseInt(et_courseWeek.getText().toString())
+                        && 7 >= Integer.parseInt(et_courseWeek.getText().toString())
+                        && 1 <= Integer.parseInt(et_courseWeek.getText().toString())
+                        && 6 >= Integer.parseInt(et_coursePeriod.getText().toString())
+                ) {
                     if (type.equals("edit")) {
-                        editCourse(course.getCou_id(), et_courseName.getText().toString(), et_courseTeacher.getText().toString(), et_courseClassroom.getText().toString(), et_courseWeek.getText().toString(), et_coursePeriod.getText().toString(), et_courseExamTime.getText().toString());
+                        editCourse(course.getCou_id(), et_courseName.getText().toString(), sp_courseTeacher.getSelectedItem().toString(), et_courseClassroom.getText().toString(), et_courseWeek.getText().toString(), et_coursePeriod.getText().toString(), tv_courseExamTime.getText().toString());
                     } else {
-                        addCourse(et_courseName.getText().toString(), et_courseTeacher.getText().toString(), et_courseClassroom.getText().toString(), et_courseWeek.getText().toString(), et_coursePeriod.getText().toString(), et_courseExamTime.getText().toString());
+                        addCourse(et_courseName.getText().toString(), sp_courseTeacher.getSelectedItem().toString(), et_courseClassroom.getText().toString(), et_courseWeek.getText().toString(), et_coursePeriod.getText().toString(), tv_courseExamTime.getText().toString());
                     }
                     showCourseDialog.dismiss();
                 } else {
-                    Toast toast = Toast.makeText(AdminActivity.this, "请补全信息", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(AdminActivity.this, "请补全信息，并填写正确的格式", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }
         });
 
         showCourseDialog.show();
+    }
+
+
+    String time;
+
+    /**
+     * 弹窗-设置时间
+     **/
+    public void showDatePickerDialog(String identify) {
+        // 装入自定义View ==> R.layout.dialog_course.xml
+        AlertDialog.Builder showCourseDialogBuilder = new AlertDialog.Builder(this);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_date_picker, null);
+        showCourseDialogBuilder.setView(dialogView);
+        AlertDialog showCourseDialog = showCourseDialogBuilder.create();
+        DatePicker datePicker = dialogView.findViewById(R.id.datePicker);
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int date = c.get(Calendar.DATE);
+        datePicker.init(year, month, date, new DatePicker.OnDateChangedListener() {
+            @Override
+            public void onDateChanged(DatePicker arg0, int arg1, int arg2, int arg3) {
+                time = arg1 + "-" + (arg2 + 1) + "-" + arg3;
+                if (identify.equals("考试时间")) {
+                    tv_courseExamTime.setText(time);
+                } else if (identify.equals("出生日期")) {
+                    tv_studentDate.setText(time);
+                }
+                showCourseDialog.dismiss();
+            }
+        });
+        showCourseDialog.show();
+    }
+
+    /**
+     * 根据值, 设置spinner默认选中:
+     *
+     * @param spinner
+     * @param value
+     */
+    public static void setSpinnerItemSelectedByValue(Spinner spinner, String value) {
+        SpinnerAdapter apsAdapter = spinner.getAdapter(); //得到SpinnerAdapter对象
+        int k = apsAdapter.getCount();
+        for (int i = 0; i < k; i++) {
+            if (value.equals(apsAdapter.getItem(i).toString())) {
+                spinner.setSelection(i, true);// 默认选中项
+                break;
+            }
+        }
     }
 
     //接受子线程的message

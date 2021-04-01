@@ -37,14 +37,12 @@ public class AlarmService extends Service {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        //这是课程与当前时间相差的毫秒数
         long diff = d2.getTime() - d1.getTime();
         Log.e(TAG, "课程与当前时间相差: " + diff);
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        //修改此处的milliseconds从而改变提醒间隔时间
-        //这是毫秒数
-        int milliseconds = (int) diff;
-        //SystemClock.elapsedRealtime()表示1970年1月1日0点至今所经历的时间
-        long triggerAtTime = SystemClock.elapsedRealtime() + milliseconds;
+        //SystemClock.elapsedRealtime()（表示1970年1月1日0点至今所经历的时间）加上当前时间与课程相差时间，再提前了20分钟（1200000毫秒）
+        long triggerAtTime = SystemClock.elapsedRealtime() + diff - 1200000 ;
         //此处设置开启AlarmReceiver这个Service
         Intent i = new Intent(this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, i, 0);

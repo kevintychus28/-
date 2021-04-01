@@ -1,0 +1,12 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--未点击的颜色-->
+    <item android:state_pressed="false"
+        android:drawable="@color/bottom_bar"/>
+
+    <!--点击后的颜色-->
+    <item android:state_pressed="true"
+        android:drawable="@color/bottom_bar_selected"/>
+
+</selector>

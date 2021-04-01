@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     // 课程表
     int itemHeight;
     int marTop, marLeft;
+    private List<Course> scheduleList;
     private List[] courseData = new ArrayList[7];// 每日课程
     private LinearLayout[] weekPanels = new LinearLayout[7];
     private Intent intent;
@@ -312,6 +313,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+//    private void highlightNavigation(int i) {
+//        switch (i) {
+//            case 1:
+//                break;
+//            case 2:
+//                break;
+//            case 3:
+//                break;
+//            case 4:
+//                break;
+//        }
+//
+//    }
+
+
 //    <<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<--- 课程表 --->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>
 
     /**
@@ -329,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String json = scheduleService.getSchedule(userID, identity);
                 Log.e(TAG, "课程JSON数据: " + json);
                 // 把json数据转换为List
-                List<Course> scheduleList = JSONObject.parseArray(json, Course.class);
+                scheduleList = JSONObject.parseArray(json, Course.class);
                 // 一周七天分别插入课程
                 for (int i = 0; i < 7; i++) {
                     List<Course> list = new ArrayList<Course>();
@@ -391,9 +407,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tv.setGravity(Gravity.CENTER_HORIZONTAL);
             tv.setTextSize(12);
             tv.setTextColor(getResources().getColor(R.color.courseTextColor));
-            tv.setText(c.getCou_name() + "\n" + c.getCou_classroom() + "\n" + c.getCou_teacher());// 设置课程信息
+            tv.setText(c.getCou_name() + "\n\n\n" + c.getCou_classroom());// 设置课程信息
             //tv.setBackgroundColor(getResources().getColor(R.color.classIndex));
-            tv.setBackground(getResources().getDrawable(R.drawable.course_shape));
+            tv.setBackground(getResources().getDrawable(getCourseBackground()));
             // 添加点击课程，显示课程信息及提醒的弹窗的事件
             tv.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -406,7 +422,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Log.e(TAG, c.getCou_name());
             pre = c;
         }
+    }
 
+    int colorNum = 0;
+
+    //随机获取课程表中的课程背景色
+    public int getCourseBackground() {
+        if (colorNum == 6) {
+            colorNum = 0;
+        }
+        int color = R.drawable.course_shape_1;
+        switch (colorNum) {
+            case 0:
+                color = R.drawable.course_shape_5;
+                break;
+            case 1:
+                color = R.drawable.course_shape_3;
+                break;
+            case 2:
+                color = R.drawable.course_shape_6;
+                break;
+            case 3:
+                color = R.drawable.course_shape_4;
+                break;
+            case 4:
+                color = R.drawable.course_shape_2;
+                break;
+            case 5:
+                color = R.drawable.course_shape_1;
+                break;
+        }
+        colorNum++;
+        return color;
     }
 
     /**
@@ -439,7 +486,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     intent.putExtra("start_time", course.getStart_time());
                     //开启关闭Service
                     startService(intent);
-                    Toast toast = Toast.makeText(MainActivity.this, "提醒设置成功！", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(MainActivity.this, "提醒设置成功！将在课程开始前20分钟提醒", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }
@@ -980,7 +1027,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }.start();
     }
 
-    public List<Course> getExamTimeList(){
+    public List<Course> getExamTimeList() {
         return examTimeList;
     }
 
