@@ -2,7 +2,9 @@ package com.example.cms.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -18,8 +20,8 @@ import com.example.cms.R;
 import com.example.cms.entity.Student;
 import com.example.cms.entity.Teacher;
 import com.example.cms.util.LoginService;
-import com.example.cms.util.LoginServiceTec;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -27,8 +29,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     String userID, password;
 
-    Student stu;
-    Teacher tec;
     //区分学生和老师
     private Boolean is_stu = true;
     //管理员
@@ -41,7 +41,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CheckBox cb_checkbox;
     private Button btn_login;
 
-    private List<Student> stuData;
+    //实现记住密码需要用到SharePreferences
+    private SharedPreferences sp;
+    private SharedPreferences.Editor editor;
 
     private static final String TAG = "Log日志";
 
@@ -49,6 +51,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        sp = this.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         initView();
     }
 
@@ -66,6 +69,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         teacher.setOnClickListener(this);
         cb_checkbox.setOnClickListener(this);
         btn_login.setOnClickListener(this);
+        if (sp.getBoolean("checkboxBoolean", false)) {
+            et_userID.setText(sp.getString("userID", ""));
+            et_password.setText(sp.getString("password", ""));
+        }
     }
 
 
@@ -85,28 +92,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 break;
             case R.id.btn_login:
+                userID = et_userID.getText().toString();
+                password = et_password.getText().toString();
+                // 判断是否已输入文本
+                if (userID.trim().equals("")) {
+                    Toast.makeText(this,
+                            "请您输入账号！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (password.trim().equals("")) {
+                    Toast.makeText(this,
+                            "请您输入密码！", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // 登录请求
                 new Thread() {
                     @Override
                     public void run() {
                         super.run();
-                        Log.e(TAG, "run: 开启登录线程");
-                        userID = et_userID.getText().toString().trim();
-                        password = et_password.getText().toString().trim();
-
+                        Log.e(TAG, "Thread run: 开启登录线程");
                         //学生登录
                         if (is_stu) {
                             //发送登录请求
                             LoginService loginService = new LoginService();
-                            String json = loginService.LoginService(userID, password);
+                            String json = null;
+                            try {
+                                json = loginService.studentLoginService(userID, password);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            Log.d(TAG, "服务端返回数据为: " + json);
                             List<Student> studentList = JSONObject.parseArray(json, Student.class);
                             if (studentList != null) {
-                                Log.e(TAG, "studentList的数据为：" + studentList);
+                                rememberInfo(); //记住账号密码
                                 Bundle bundle = new Bundle();
                                 bundle.putBoolean("is_stu", is_stu);
                                 bundle.putString("userID", userID);
-                                Log.e(TAG, userID);
                                 bundle.putString("userName", studentList.get(0).getStu_name());
-                                Log.e(TAG, studentList.get(0).getStu_name());
                                 bundle.putString("userSex", studentList.get(0).getStu_sex());
                                 bundle.putString("userDate", studentList.get(0).getStu_date());
                                 bundle.putString("userClass", studentList.get(0).getStu_class());
@@ -127,17 +149,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         //教师登录
                         else {
                             //发送登录请求
-                            LoginServiceTec loginService = new LoginServiceTec();
-                            String json = loginService.LoginService(userID, password);
+                            LoginService loginService = new LoginService();
+                            String json = null;
+                            try {
+                                json = loginService.teacherLoginService(userID, password);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                             List<Teacher> teacherList = JSONObject.parseArray(json, Teacher.class);
                             if (teacherList != null) {
-                                Log.e(TAG, "teacherList：" + teacherList);
+                                rememberInfo(); //记住账号密码
+                                Log.d(TAG, "teacherList：" + teacherList);
                                 Bundle bundle = new Bundle();
                                 bundle.putBoolean("is_stu", is_stu);
                                 bundle.putString("userID", userID);
-                                Log.e(TAG, userID);
                                 bundle.putString("userName", teacherList.get(0).getTec_name());
-                                Log.e(TAG, teacherList.get(0).getTec_name());
                                 bundle.putString("userCollege", teacherList.get(0).getTec_department());
                                 Intent i = new Intent();
                                 i.putExtras(bundle);
@@ -158,5 +184,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    // 记住密码
+    public void rememberInfo() {
+        boolean CheckBoxLogin = cb_checkbox.isChecked();
+        editor = sp.edit();
+        if (CheckBoxLogin) {
+            editor.putString("userID", userID);
+            editor.putString("password", password);
+            editor.putBoolean("checkboxBoolean", true);
+        } else editor.clear();
+        editor.apply();
+    }
 
 }

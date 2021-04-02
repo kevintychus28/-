@@ -23,14 +23,13 @@ public class ScheduleService {
 
     public String getSchedule(String userID, String identity) {
         try {
-            Log.e(TAG, "发送请求");
+            Log.e(TAG, "发送获取课程表请求");
             // 创建请求方法的实例，并指定请求URL
             HttpGet httpGet = new HttpGet(url + "?userID=" + userID + "&identity=" + identity);
             // 创建HttpClient对象
             HttpClient httpClient = new DefaultHttpClient();
             // 客户端调用execute方法，使用Get方式执行请求，获得服务器端的回应response
             HttpResponse response = httpClient.execute(httpGet);
-            Log.e(TAG, "接收响应");
             // 检查状态码
             if (response.getStatusLine().getStatusCode() == 200) {
                 // 建立httpEntity对象

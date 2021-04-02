@@ -22,131 +22,165 @@
     <LinearLayout
         android:id="@+id/bottom_view"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="70dp"
         android:background="@color/bottom_bar"
         android:orientation="horizontal">
 
-        <RelativeLayout
-            android:id="@+id/bottom_bar_1"
-            android:layout_width="0dp"
+        <RadioGroup
+            android:id="@+id/rg_bottom_bar"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/bar_background"
-            android:clickable="true">
+            android:background="@color/bottom_bar"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/bottom_bar_1_image"
-                android:layout_width="27dp"
-                android:layout_height="27dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:src="@mipmap/schedule_1" />
+            <RadioButton
+                android:id="@+id/rb_schedule"
+                style="@style/TabRadioButton"
+                android:checked="true"
+                android:drawableTop="@drawable/tab_schedule_selector"
+                android:text="课表" />
 
-            <TextView
-                android:id="@+id/bottom_bar_1_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/bottom_bar_1_image"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="课程表"
-                android:textColor="#ffffff"
-                android:textSize="14sp" />
-        </RelativeLayout>
+            <RadioButton
+                android:id="@+id/rb_score"
+                style="@style/TabRadioButton"
+                android:drawableTop="@drawable/tab_score_selector"
+                android:text="成绩" />
 
-        <RelativeLayout
-            android:id="@+id/bottom_bar_2"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/bar_background"
+            <RadioButton
+                android:id="@+id/rb_note"
+                style="@style/TabRadioButton"
+                android:drawableTop="@drawable/tab_note_selector"
+                android:text="笔记" />
 
-            android:clickable="true">
+            <RadioButton
+                android:id="@+id/rb_homepage"
+                style="@style/TabRadioButton"
+                android:drawableTop="@drawable/tab_homepage_selector"
+                android:text="我的" />
+        </RadioGroup>
 
-            <ImageView
-                android:id="@+id/bottom_bar_2_image"
-                android:layout_width="27dp"
-                android:layout_height="27dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:src="@mipmap/score_1" />
 
-            <TextView
-                android:id="@+id/bottom_bar_2_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/bottom_bar_2_image"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="成绩"
-                android:textColor="#ffffff"
-                android:textSize="14sp" />
-        </RelativeLayout>
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/bottom_bar_1"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_margin="5dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/bar_background"-->
+<!--            android:clickable="true">-->
 
-        <RelativeLayout
-            android:id="@+id/bottom_bar_3"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/bar_background"
+<!--            <ImageView-->
+<!--                android:id="@+id/bottom_bar_1_image"-->
+<!--                android:layout_width="27dp"-->
+<!--                android:layout_height="27dp"-->
+<!--                android:layout_alignParentTop="true"-->
+<!--                android:layout_centerHorizontal="true"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:src="@mipmap/schedule_1" />-->
 
-            android:clickable="true">
+<!--            <TextView-->
+<!--                android:id="@+id/bottom_bar_1_text"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/bottom_bar_1_image"-->
+<!--                android:gravity="center"-->
+<!--                android:singleLine="true"-->
+<!--                android:text="课程表"-->
+<!--                android:textColor="#ffffff"-->
+<!--                android:textSize="14sp" />-->
+<!--        </RelativeLayout>-->
 
-            <ImageView
-                android:id="@+id/bottom_bar_3_image"
-                android:layout_width="27dp"
-                android:layout_height="27dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:src="@mipmap/note_1" />
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/bottom_bar_2"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_margin="5dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/bar_background"-->
 
-            <TextView
-                android:id="@+id/bottom_bar_3_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/bottom_bar_3_image"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="笔记"
-                android:textColor="#ffffff"
-                android:textSize="14sp" />
-        </RelativeLayout>
+<!--            android:clickable="true">-->
 
-        <RelativeLayout
-            android:id="@+id/bottom_bar_4"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:background="@drawable/bar_background"
-            android:clickable="true">
+<!--            <ImageView-->
+<!--                android:id="@+id/bottom_bar_2_image"-->
+<!--                android:layout_width="27dp"-->
+<!--                android:layout_height="27dp"-->
+<!--                android:layout_alignParentTop="true"-->
+<!--                android:layout_centerHorizontal="true"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:src="@mipmap/score_1" />-->
 
-            <ImageView
-                android:id="@+id/bottom_bar_4_image"
-                android:layout_width="27dp"
-                android:layout_height="27dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:src="@mipmap/homepage_1" />
+<!--            <TextView-->
+<!--                android:id="@+id/bottom_bar_2_text"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/bottom_bar_2_image"-->
+<!--                android:gravity="center"-->
+<!--                android:singleLine="true"-->
+<!--                android:text="成绩"-->
+<!--                android:textColor="#ffffff"-->
+<!--                android:textSize="14sp" />-->
+<!--        </RelativeLayout>-->
 
-            <TextView
-                android:id="@+id/bottom_bar_4_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/bottom_bar_4_image"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="我"
-                android:textColor="#ffffff"
-                android:textSize="14sp" />
-        </RelativeLayout>
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/bottom_bar_3"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_margin="5dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/bar_background"-->
+
+<!--            android:clickable="true">-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/bottom_bar_3_image"-->
+<!--                android:layout_width="27dp"-->
+<!--                android:layout_height="27dp"-->
+<!--                android:layout_alignParentTop="true"-->
+<!--                android:layout_centerHorizontal="true"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:src="@mipmap/note_1" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/bottom_bar_3_text"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/bottom_bar_3_image"-->
+<!--                android:gravity="center"-->
+<!--                android:singleLine="true"-->
+<!--                android:text="笔记"-->
+<!--                android:textColor="#ffffff"-->
+<!--                android:textSize="14sp" />-->
+<!--        </RelativeLayout>-->
+
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/bottom_bar_4"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_margin="5dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@drawable/bar_background"-->
+<!--            android:clickable="true">-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/bottom_bar_4_image"-->
+<!--                android:layout_width="27dp"-->
+<!--                android:layout_height="27dp"-->
+<!--                android:layout_alignParentTop="true"-->
+<!--                android:layout_centerHorizontal="true"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:src="@mipmap/homepage_1" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/bottom_bar_4_text"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@+id/bottom_bar_4_image"-->
+<!--                android:gravity="center"-->
+<!--                android:singleLine="true"-->
+<!--                android:text="我"-->
+<!--                android:textColor="#ffffff"-->
+<!--                android:textSize="14sp" />-->
+<!--        </RelativeLayout>-->
     </LinearLayout>
 
 </LinearLayout>

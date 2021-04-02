@@ -46,7 +46,6 @@ public class GirdViewCourseAdapter extends BaseAdapter {
         if (convertView == null) {
             // 设置视图(创建一个laylout的xml)
             convertView = View.inflate(context, R.layout.item_course, null);
-            Log.e(TAG, "getView: 设置视图");
             // 创建对象(里面是我们要得到里面的属性)
             holder = new GirdViewCourseAdapter.GridViewHolder();
             // 找控件

@@ -27,7 +27,8 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,10 +67,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private FrameLayout main_body;
 
-    private RelativeLayout bottom_bar_1;
-    private RelativeLayout bottom_bar_2;
-    private RelativeLayout bottom_bar_3;
-    private RelativeLayout bottom_bar_4;
+    private RadioGroup bottom_bar;
+    private RadioButton rb_schedule;
+    private RadioButton rb_score;
+    private RadioButton rb_note;
+    private RadioButton rb_homepage;
 
     private ScheduleFragment fragment_1;
     private ScoreFragment fragment_2;
@@ -122,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initView();
         //加载课程表
         fManager = getFragmentManager();
-        setFragments(bottom_bar_1);
+        setFragments(rb_schedule);
         getScheduleData(getUserID(), getIdentity());
     }
 
@@ -131,20 +133,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //承载四大功能的主页面
         main_body = findViewById(R.id.main_body);
         //底部导航栏
-        bottom_bar_1 = findViewById(R.id.bottom_bar_1);
-        bottom_bar_2 = findViewById(R.id.bottom_bar_2);
-        bottom_bar_3 = findViewById(R.id.bottom_bar_3);
-        bottom_bar_4 = findViewById(R.id.bottom_bar_4);
+        bottom_bar =findViewById(R.id.rg_bottom_bar);
+        rb_schedule = findViewById(R.id.rb_schedule);
+        rb_score = findViewById(R.id.rb_score);
+        rb_note = findViewById(R.id.rb_note);
+        rb_homepage = findViewById(R.id.rb_homepage);
         //四大功能页面
         fragment_schedule = findViewById(R.id.fragment_schedule);
         fragment_score_report = findViewById(R.id.fragment_score_report);
         fragment_notes = findViewById(R.id.fragment_notes);
         fragment_homepage = findViewById(R.id.fragment_homepage);
         //添加点击事件
-        bottom_bar_1.setOnClickListener(this);
-        bottom_bar_2.setOnClickListener(this);
-        bottom_bar_3.setOnClickListener(this);
-        bottom_bar_4.setOnClickListener(this);
+        rb_schedule.setOnClickListener(this);
+        rb_score.setOnClickListener(this);
+        rb_note.setOnClickListener(this);
+        rb_homepage.setOnClickListener(this);
     }
 
 
@@ -162,24 +165,103 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.bottom_bar_1:
-                setFragments(bottom_bar_1);
+            case R.id.rb_schedule:
+                setFragments(rb_schedule);
                 getScheduleData(getUserID(), getIdentity());
                 break;
-            case R.id.bottom_bar_2:
-                setFragments(bottom_bar_2);
+            case R.id.rb_score:
+                setFragments(rb_score);
                 getScore(getIdentity());
                 break;
-            case R.id.bottom_bar_3:
-                setFragments(bottom_bar_3);
+            case R.id.rb_note:
+                setFragments(rb_note);
                 getNote(getUserID());
                 break;
-            case R.id.bottom_bar_4:
-                setFragments(bottom_bar_4);
+            case R.id.rb_homepage:
+                setFragments(rb_homepage);
                 getExamTime(getUserID(), getIdentity());
                 break;
         }
     }
+
+    /**
+     * 设置四大功能区域
+     *
+     * @param v
+     */
+    private void setFragments(View v) {
+        FragmentTransaction fTransaction = fManager.beginTransaction();
+        hideFragments(fTransaction);
+        switch (v.getId()) {
+            case R.id.rb_schedule:
+                if (fragment_1 == null) {
+                    fragment_1 = new ScheduleFragment();
+                    fTransaction.add(R.id.main_body, fragment_1);
+                } else {
+                    fTransaction.show(fragment_1);
+                }
+                break;
+            case R.id.rb_score:
+                if (fragment_2 == null) {
+                    fragment_2 = new ScoreFragment();
+                    fTransaction.add(R.id.main_body, fragment_2);
+                } else {
+                    fTransaction.show(fragment_2);
+                }
+                break;
+            case R.id.rb_note:
+                if (fragment_3 == null) {
+                    fragment_3 = new NotesFragment();
+                    fTransaction.add(R.id.main_body, fragment_3);
+                } else {
+                    fTransaction.show(fragment_3);
+                }
+                break;
+            case R.id.rb_homepage:
+                if (fragment_4 == null) {
+                    fragment_4 = new HomePageFragment();
+                    fTransaction.add(R.id.main_body, fragment_4);
+                } else {
+                    fTransaction.show(fragment_4);
+                }
+                break;
+        }
+        fTransaction.commit();
+    }
+
+    /**
+     * 隐藏功能区域
+     *
+     * @param fTransaction
+     */
+    private void hideFragments(FragmentTransaction fTransaction) {
+        if (fragment_1 != null) {
+            fTransaction.hide(fragment_1);
+        }
+        if (fragment_2 != null) {
+            fTransaction.hide(fragment_2);
+        }
+        if (fragment_3 != null) {
+            fTransaction.hide(fragment_3);
+        }
+        if (fragment_4 != null) {
+            fTransaction.hide(fragment_4);
+        }
+    }
+
+//    private void highlightNavigation(int i) {
+//        switch (i) {
+//            case 1:
+//                break;
+//            case 2:
+//                break;
+//            case 3:
+//                break;
+//            case 4:
+//                break;
+//        }
+//
+//    }
 
     //接受子线程的message
     private Handler mHandler = new Handler() {
@@ -248,86 +330,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         normalDialog.show();
     }
 
-    /**
-     * 设置四大功能区域
-     *
-     * @param v
-     */
-    private void setFragments(View v) {
-        FragmentTransaction fTransaction = fManager.beginTransaction();
-        hideFragments(fTransaction);
-        switch (v.getId()) {
-            case R.id.bottom_bar_1:
-                if (fragment_1 == null) {
-                    fragment_1 = new ScheduleFragment();
-                    fTransaction.add(R.id.main_body, fragment_1);
-                } else {
-                    fTransaction.show(fragment_1);
-                }
-                break;
-            case R.id.bottom_bar_2:
-                if (fragment_2 == null) {
-                    fragment_2 = new ScoreFragment();
-                    fTransaction.add(R.id.main_body, fragment_2);
-                } else {
-                    fTransaction.show(fragment_2);
-                }
-                break;
-            case R.id.bottom_bar_3:
-                if (fragment_3 == null) {
-                    fragment_3 = new NotesFragment();
-                    fTransaction.add(R.id.main_body, fragment_3);
-                } else {
-                    fTransaction.show(fragment_3);
-                }
-                break;
-            case R.id.bottom_bar_4:
-                if (fragment_4 == null) {
-                    fragment_4 = new HomePageFragment();
-                    fTransaction.add(R.id.main_body, fragment_4);
-                } else {
-                    fTransaction.show(fragment_4);
-                }
-                break;
-        }
-        fTransaction.commit();
-    }
-
-    /**
-     * 隐藏功能区域
-     *
-     * @param fTransaction
-     */
-    private void hideFragments(FragmentTransaction fTransaction) {
-        if (fragment_1 != null) {
-            fTransaction.hide(fragment_1);
-        }
-        if (fragment_2 != null) {
-            fTransaction.hide(fragment_2);
-        }
-        if (fragment_3 != null) {
-            fTransaction.hide(fragment_3);
-        }
-        if (fragment_4 != null) {
-            fTransaction.hide(fragment_4);
-        }
-    }
-
-//    private void highlightNavigation(int i) {
-//        switch (i) {
-//            case 1:
-//                break;
-//            case 2:
-//                break;
-//            case 3:
-//                break;
-//            case 4:
-//                break;
-//        }
-//
-//    }
-
-
 //    <<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<--- 课程表 --->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>
 
     /**
@@ -336,14 +338,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param userID
      */
     public void getScheduleData(String userID, String identity) {
-        Log.e(TAG, userID + identity);
         new Thread() {
             @Override
             public void run() {
                 super.run();
                 ScheduleService scheduleService = new ScheduleService();
                 String json = scheduleService.getSchedule(userID, identity);
-                Log.e(TAG, "课程JSON数据: " + json);
+                Log.d(TAG, "课程JSON数据: " + json);
                 // 把json数据转换为List
                 scheduleList = JSONObject.parseArray(json, Course.class);
                 // 一周七天分别插入课程
@@ -356,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Log.e(TAG, "--插入周" + (i + 1) + "课程");
                         }
                     courseData[i] = list;// 周(i+1)的课程
-                    Log.e(TAG, "courseData[" + i + "]: " + courseData[i]);
+                    Log.d(TAG, "courseData[" + i + "]: " + courseData[i]);
                 }
                 // 获取所有课程名
                 courseNameList = new ArrayList<>();
@@ -364,9 +365,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 for (int j = 0; j < scheduleList.size(); j++) {
                     courseNameList.add(scheduleList.get(j).getCou_name());
                 }
-                Log.e(TAG, "courseNameList：" + courseNameList);
+                Log.d(TAG, "courseNameList：" + courseNameList);
                 courseName = courseNameList.get(0);
-                Log.e(TAG, "courseName：" + courseName);
                 Message msg = Message.obtain();
                 msg.what = 100;
                 mHandler.sendMessage(msg);
@@ -419,7 +419,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             });
             // 将该课程插入到当天课程表中
             ll.addView(tv);
-            Log.e(TAG, c.getCou_name());
+            Log.d(TAG, c.getCou_name());
             pre = c;
         }
     }
@@ -481,7 +481,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Toast toast = Toast.makeText(MainActivity.this, "只能提醒当天课程噢~", Toast.LENGTH_SHORT);
                     toast.show();
                 } else {
-                    Log.e(TAG, "该课程开始时间为：" + course.getStart_time());
+                    Log.d(TAG, "该课程开始时间为：" + course.getStart_time());
                     intent = new Intent(MainActivity.this, AlarmService.class);
                     intent.putExtra("start_time", course.getStart_time());
                     //开启关闭Service
@@ -566,7 +566,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         showScore.add(scoreList.get(i));
                     }
                 }
-                Log.e(TAG, "showScore: " + showScore);
                 Message msg = Message.obtain();
                 msg.what = 200;
                 mHandler.sendMessage(msg);
