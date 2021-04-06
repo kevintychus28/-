@@ -16,7 +16,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:background="@drawable/login_btn">
+        android:background="#B1B1B1">
 
         <ImageView
             android:id="@+id/iv_addTitle"
@@ -48,7 +48,7 @@
             android:background="@null"
             android:ems="19"
             android:hint="  请输入标题"
-            android:textColorHint="#cccccc"
+            android:textColorHint="@color/white"
             android:textSize="15sp"
             android:maxLength="100"/>
 
@@ -62,7 +62,7 @@
         android:layout_marginTop="3dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:background="@drawable/login_btn">
+        android:background="#B1B1B1">
 
         <ImageView
             android:id="@+id/iv_addContent"
@@ -96,7 +96,7 @@
             android:background="@null"
             android:drawablePadding="5dp"
             android:hint="  请输入笔记内容\n  只能输入800个字噢~"
-            android:textColorHint="#cccccc"
+            android:textColorHint="@color/white"
             android:textSize="15sp"
             android:maxLength="800"/>
 

@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //承载四大功能的主页面
         main_body = findViewById(R.id.main_body);
         //底部导航栏
-        bottom_bar =findViewById(R.id.rg_bottom_bar);
+        bottom_bar = findViewById(R.id.rg_bottom_bar);
         rb_schedule = findViewById(R.id.rb_schedule);
         rb_score = findViewById(R.id.rb_score);
         rb_note = findViewById(R.id.rb_note);
@@ -522,6 +522,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 更新课程表
      */
     public void setSchedule() {
+        colorNum = 0;
         Log.i("Msg", "初始化面板");
         for (int i = 0; i < weekPanels.length; i++) {
             weekPanels[i] = (LinearLayout) findViewById(R.id.weekPanel_1 + i);
@@ -636,8 +637,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             rName.setText("学生姓名");
             edit_score.setVisibility(View.VISIBLE);
         }
-        //选择课程的下拉框
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, courseNameList);
+        //Spinner中文框显示样式
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_item, courseNameList);
+        //Spinner下拉菜单显示样式
+        adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         switchCourse.setAdapter(adapter);
         //为下拉框添加选择事件
         switchCourse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -6,13 +6,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:background="@color/themeColor" />
 
     <!--下拉方式选课程-->
     <Spinner
         android:id="@+id/switchCourse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <!--分隔线-->
     <View

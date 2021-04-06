@@ -23,14 +23,14 @@
         android:id="@+id/bottom_view"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/bottom_bar"
+        android:background="@color/themeColor"
         android:orientation="horizontal">
 
         <RadioGroup
             android:id="@+id/rg_bottom_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/bottom_bar"
+            android:background="@color/themeColor"
             android:orientation="horizontal">
 
             <RadioButton

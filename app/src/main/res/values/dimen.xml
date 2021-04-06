@@ -4,5 +4,6 @@
     <dimen name="weekItemHeight">90dp</dimen>
     <dimen name="weekItemMarTop">2dp</dimen>
     <dimen name="weekItemMarLeft">2dp</dimen>
+    <dimen name="periodWeight">15dp</dimen>
 
 </resources>

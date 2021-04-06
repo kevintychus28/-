@@ -6,64 +6,38 @@
     android:orientation="vertical">
 
     <!--选择时间-->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp">
-        <View
-            android:id="@+id/switchYear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center" />
+        android:layout_height="55dp"
+        android:background="@color/themeColor">
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="2dp"
-            android:background="@color/bottom_bar" />
-
-        <!--下拉方式选周数-->
-        <Spinner
-            android:id="@+id/switchTerm"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/schedule_tittle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center" />
+            android:layout_centerInParent="true"
+            android:text="   课 程 表   "
+            android:textColor="#E3E3E3"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:drawableLeft="@mipmap/icon_tittle"
+            android:drawableRight="@mipmap/icon_tittle" />
 
-        <View
-            android:layout_width="1dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="2dp"
-            android:background="@color/bottom_bar" />
-        <View
-            android:id="@+id/switchWeek"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center" />
-    </LinearLayout>
+
+    </RelativeLayout>
 
     <!--分隔线-->
     <View
         android:layout_width="match_parent"
-        android:layout_height="12dp"
+        android:layout_height="10dp"
         android:background="@drawable/background_gradient_from_top_to_bottom" />
 
     <!--显示星期-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:background="@color/white"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
@@ -140,117 +114,146 @@
             <LinearLayout
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
                 android:background="@color/white"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="@dimen/periodWeight"
+                    android:layout_height="@dimen/weekItemMarTop"
+                    android:background="@color/courseTextColor" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/weekItemHeight"
-                    android:layout_marginTop="@dimen/weekItemMarTop"
                     android:gravity="center"
                     android:text="@string/第一节"
                     android:textSize="10dp" />
 
+                <View
+                    android:layout_width="@dimen/periodWeight"
+                    android:layout_height="@dimen/weekItemMarTop"
+                    android:background="@color/courseTextColor" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/weekItemHeight"
-                    android:layout_marginTop="@dimen/weekItemMarTop"
                     android:gravity="center"
                     android:text="@string/第二节"
                     android:textSize="10dp" />
 
+                <View
+                    android:layout_width="@dimen/periodWeight"
+                    android:layout_height="@dimen/weekItemMarTop"
+                    android:background="@color/courseTextColor" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/weekItemHeight"
-                    android:layout_marginTop="@dimen/weekItemMarTop"
                     android:gravity="center"
                     android:text="@string/第三节"
                     android:textSize="10dp" />
 
+                <View
+                    android:layout_width="@dimen/periodWeight"
+                    android:layout_height="@dimen/weekItemMarTop"
+                    android:background="@color/courseTextColor" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/weekItemHeight"
-                    android:layout_marginTop="@dimen/weekItemMarTop"
                     android:gravity="center"
                     android:text="@string/第四节"
                     android:textSize="10dp" />
 
+                <View
+                    android:layout_width="@dimen/periodWeight"
+                    android:layout_height="@dimen/weekItemMarTop"
+                    android:background="@color/courseTextColor" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/weekItemHeight"
-                    android:layout_marginTop="@dimen/weekItemMarTop"
                     android:gravity="center"
                     android:text="@string/第五节"
                     android:textSize="10dp" />
 
+                <View
+                    android:layout_width="@dimen/periodWeight"
+                    android:layout_height="@dimen/weekItemMarTop"
+                    android:background="@color/courseTextColor" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/weekItemHeight"
-                    android:layout_marginTop="@dimen/weekItemMarTop"
                     android:gravity="center"
                     android:text="@string/第六节"
                     android:textSize="10dp" />
+
+                <View
+                    android:layout_width="@dimen/periodWeight"
+                    android:layout_height="@dimen/weekItemMarTop"
+                    android:background="@color/courseTextColor" />
             </LinearLayout>
 
 
-<!--            <GridView-->
-<!--                android:id="@+id/courseDetail"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:horizontalSpacing="1dp"-->
-<!--                android:numColumns="7"-->
-<!--                android:stretchMode="columnWidth"-->
-<!--                android:verticalSpacing="1dp"></GridView>-->
+            <!--            <GridView-->
+            <!--                android:id="@+id/courseDetail"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:horizontalSpacing="1dp"-->
+            <!--                android:numColumns="7"-->
+            <!--                android:stretchMode="columnWidth"-->
+            <!--                android:verticalSpacing="1dp"></GridView>-->
 
             <LinearLayout
                 android:id="@+id/weekPanel_1"
-                android:orientation="vertical"
                 android:layout_width="0dip"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_height="match_parent" />
+                android:orientation="vertical" />
 
             <LinearLayout
                 android:id="@+id/weekPanel_2"
-                android:orientation="vertical"
                 android:layout_width="0dip"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_height="match_parent" />
+                android:orientation="vertical" />
 
             <LinearLayout
                 android:id="@+id/weekPanel_3"
-                android:orientation="vertical"
                 android:layout_width="0dip"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_height="match_parent" />
+                android:orientation="vertical" />
 
             <LinearLayout
                 android:id="@+id/weekPanel_4"
-                android:orientation="vertical"
                 android:layout_width="0dip"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_height="match_parent" />
+                android:orientation="vertical" />
 
             <LinearLayout
                 android:id="@+id/weekPanel_5"
-                android:orientation="vertical"
                 android:layout_width="0dip"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_height="match_parent" />
+                android:orientation="vertical" />
 
             <LinearLayout
                 android:id="@+id/weekPanel_6"
-                android:orientation="vertical"
                 android:layout_width="0dip"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_height="match_parent" />
+                android:orientation="vertical" />
 
             <LinearLayout
                 android:id="@+id/weekPanel_7"
-                android:orientation="vertical"
                 android:layout_width="0dip"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:layout_height="match_parent" />
+                android:orientation="vertical" />
 
         </LinearLayout>
     </ScrollView>
