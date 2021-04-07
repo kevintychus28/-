@@ -2,40 +2,37 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
-    android:layout_marginBottom="10dp"
     android:layout_marginLeft="8dp"
+    android:layout_marginTop="10dp"
     android:layout_marginRight="8dp"
+    android:layout_marginBottom="10dp"
     android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/rl_addTitle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_below="@id/rl_select"
-        android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="5dp"
-        android:background="#B1B1B1">
+        android:background="@drawable/note_dialog">
 
         <ImageView
             android:id="@+id/iv_addTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:paddingLeft="15dp"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
-            android:src="@android:drawable/stat_notify_chat" />
+            android:layout_margin="10dp"
+            android:src="@mipmap/note_tittle" />
 
         <View
             android:id="@+id/view_addTitle"
             android:layout_width="1dip"
-            android:layout_height="20dp"
+            android:layout_height="25dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/iv_addTitle"
-            android:background="#cccccc" />
+            android:background="@color/themeColor" />
 
         <EditText
             android:id="@+id/et_title"
@@ -46,11 +43,12 @@
             android:layout_marginRight="10dp"
             android:layout_toRightOf="@id/view_addTitle"
             android:background="@null"
-            android:ems="19"
             android:hint="  请输入标题"
-            android:textColorHint="@color/white"
-            android:textSize="15sp"
-            android:maxLength="100"/>
+            android:lines="1"
+            android:singleLine="true"
+            android:maxLength="100"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
     </RelativeLayout>
 
@@ -59,29 +57,28 @@
         android:layout_width="wrap_content"
         android:layout_height="250dp"
         android:layout_below="@id/rl_userName"
-        android:layout_marginTop="3dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginTop="3dp"
         android:layout_marginRight="5dp"
-        android:background="#B1B1B1">
+        android:background="@drawable/note_dialog">
 
         <ImageView
             android:id="@+id/iv_addContent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:paddingLeft="15dp"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"
-            android:src="@android:drawable/stat_notify_sdcard" />
+            android:layout_margin="10dp"
+            android:src="@mipmap/note_content" />
 
         <View
             android:id="@+id/view_addContent"
             android:layout_width="1dip"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_toRightOf="@id/iv_addContent"
-            android:background="#cccccc" />
+            android:background="@color/themeColor" />
 
         <EditText
             android:id="@+id/et_content"
@@ -90,15 +87,14 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_toRightOf="@id/view_addContent"
             android:background="@null"
-            android:drawablePadding="5dp"
             android:hint="  请输入笔记内容\n  只能输入800个字噢~"
-            android:textColorHint="@color/white"
-            android:textSize="15sp"
-            android:maxLength="800"/>
+            android:maxLength="800"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
 
 
     </RelativeLayout>

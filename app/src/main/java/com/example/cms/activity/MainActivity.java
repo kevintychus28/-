@@ -408,7 +408,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             tv.setTextSize(12);
             tv.setTextColor(getResources().getColor(R.color.courseTextColor));
             tv.setText(c.getCou_name() + "\n\n\n" + c.getCou_classroom());// 设置课程信息
-            //tv.setBackgroundColor(getResources().getColor(R.color.classIndex));
             tv.setBackground(getResources().getDrawable(getCourseBackground()));
             // 添加点击课程，显示课程信息及提醒的弹窗的事件
             tv.setOnClickListener(new View.OnClickListener() {

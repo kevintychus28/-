@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.cms.R;
 import com.example.cms.activity.LoginActivity;
@@ -75,7 +76,7 @@ public class HomePageFragment extends Fragment {
         re_about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(mContext,"作者：叶添材。邮箱：1602709610@qq.com",Toast.LENGTH_LONG).show();
             }
         });
         // 退出登录点击事件

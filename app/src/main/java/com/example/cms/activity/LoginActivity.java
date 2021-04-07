@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private RadioButton student;
     private RadioButton teacher;
+    private RadioButton admin;
     private EditText et_userID;
     private EditText et_password;
     private CheckBox cb_checkbox;
@@ -60,6 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //实例化控件
         student = findViewById(R.id.is_student);
         teacher = findViewById(R.id.is_teacher);
+        admin = findViewById(R.id.is_admin);
         et_userID = findViewById(R.id.et_userID);
         et_password = findViewById(R.id.et_password);
         cb_checkbox = findViewById(R.id.cb_checkbox);
@@ -80,16 +82,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()) {
             case R.id.is_student:
                 is_stu = true;
-                flag = 0;
                 break;
             case R.id.is_teacher:
                 is_stu = false;
-                flag++;
-                if (flag >= 5) {
-                    Intent i = new Intent();
-                    i.setClass(LoginActivity.this, AdminActivity.class);
-                    startActivity(i);
-                }
                 break;
             case R.id.btn_login:
                 userID = et_userID.getText().toString();
@@ -112,7 +107,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         super.run();
                         Log.e(TAG, "Thread run: 开启登录线程");
                         //学生登录
-                        if (is_stu) {
+                        if (student.isChecked()) {
                             //发送登录请求
                             LoginService loginService = new LoginService();
                             String json = null;
@@ -140,14 +135,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 finish();
                             } else {
                                 Looper.prepare();
-                                Toast toast = Toast.makeText(getApplicationContext(), "账号或密码错误，请重试", Toast.LENGTH_LONG);
+                                Toast toast = Toast.makeText(getApplicationContext(), "账号或密码错误，请重试", Toast.LENGTH_SHORT);
                                 toast.show();
                                 Looper.loop();
                             }
 
                         }
                         //教师登录
-                        else {
+                        else if (teacher.isChecked()) {
                             //发送登录请求
                             LoginService loginService = new LoginService();
                             String json = null;
@@ -172,11 +167,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 finish();
                             } else {
                                 Looper.prepare();
-                                Toast toast = Toast.makeText(getApplicationContext(), "账号或密码错误，请重试", Toast.LENGTH_LONG);
+                                Toast toast = Toast.makeText(getApplicationContext(), "账号或密码错误，请重试", Toast.LENGTH_SHORT);
                                 toast.show();
                                 Looper.loop();
                             }
-
+                        }
+                        //管理员登录
+                        else if (admin.isChecked() && userID.equals("admin") && password.equals("admin")) {
+                            Intent i = new Intent();
+                            i.setClass(LoginActivity.this, AdminActivity.class);
+                            startActivity(i);
+                        }
+                        //错误提示
+                        else {
+                            Looper.prepare();
+                            Toast toast = Toast.makeText(getApplicationContext(), "账号或密码错误，请重试", Toast.LENGTH_SHORT);
+                            toast.show();
+                            Looper.loop();
                         }
                     }
                 }.start();

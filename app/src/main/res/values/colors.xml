@@ -9,6 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="courseTextColor" >#ECECEC</color>
     <color name="themeColor" >#004684</color>
-    <color name="bottom_bar_selected" >#2990EC</color>
+    <color name="btn_selected" >#005FB3</color>
+    <color name="btn_default" >#C8C8C8</color>
+    <color name="bottom_bar_selected" >#1E95FF</color>
 
 </resources>

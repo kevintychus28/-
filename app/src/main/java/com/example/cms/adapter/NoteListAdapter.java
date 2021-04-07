@@ -4,7 +4,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.cms.R;
@@ -51,7 +53,8 @@ public class NoteListAdapter extends BaseAdapter {
             // 创建对象(里面是我们要得到里面的属性)
             holder = new ListViewHolder();
             // 找控件
-            holder.noteItem = (LinearLayout) convertView.findViewById(R.id.noteItem) ;
+            holder.noteItemIcon = (ImageView) convertView.findViewById(R.id.noteItemIcon);
+            holder.noteItem = (RelativeLayout) convertView.findViewById(R.id.noteItem);
             holder.nTitle = (TextView) convertView.findViewById(R.id.item_Title);
             holder.nContent = (TextView) convertView.findViewById(R.id.item_Content);
             holder.nDelete = (TextView) convertView.findViewById(R.id.item_Delete);
@@ -67,6 +70,7 @@ public class NoteListAdapter extends BaseAdapter {
         Note note = noteList.get(position);
 
         // 设置内容
+        holder.noteItemIcon.setBackground(context.getResources().getDrawable(getBackground(position)));
         holder.nID = note.getNote_id();
         holder.nTitle.setText(note.getTitle());
         holder.nContent.setText(note.getContent());
@@ -90,9 +94,26 @@ public class NoteListAdapter extends BaseAdapter {
         return convertView;
     }
 
+    // 点的颜色
+    public int getBackground(int position) {
+        int i = position % 4;
+        switch (i) {
+            case 0:
+                return R.drawable.note_item_1;
+            case 1:
+                return R.drawable.note_item_2;
+            case 2:
+                return R.drawable.note_item_3;
+            case 3:
+                return R.drawable.note_item_4;
+        }
+        return R.drawable.note_item_1;
+    }
+
     class ListViewHolder {
         String nID;
-        LinearLayout noteItem;
+        ImageView noteItemIcon;
+        RelativeLayout noteItem;
         TextView nTitle;
         TextView nContent;
         TextView nEdit;

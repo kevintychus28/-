@@ -22,31 +22,44 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_title"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp">
 
         <RadioGroup
             android:id="@+id/rd_select"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="@null"
+            android:orientation="horizontal"
             app:buttonTint="@color/themeColor">
+
             <RadioButton
                 android:id="@+id/is_student"
+                style="@style/select_flex_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:checked="true"
                 android:text="学生端"
                 android:textSize="10sp"
-                android:checked="true"
-                style="@style/select_flex_style"/>
+                android:textStyle="bold" />
+
             <RadioButton
                 android:id="@+id/is_teacher"
+                style="@style/select_flex_style"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="教师端"
                 android:textSize="10sp"
-                style="@style/select_flex_style"/>
+                android:textStyle="bold" />
+
+            <RadioButton
+                android:id="@+id/is_admin"
+                style="@style/select_flex_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="管理员"
+                android:textSize="10sp"
+                android:textStyle="bold" />
         </RadioGroup>
 
     </RelativeLayout>
@@ -64,9 +77,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:paddingBottom="15dp"
             android:paddingLeft="30dp"
             android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:src="@mipmap/ic_edittextuname" />
 
         <View
@@ -116,9 +129,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:paddingBottom="15dp"
             android:paddingLeft="30dp"
             android:paddingTop="15dp"
+            android:paddingBottom="15dp"
             android:src="@mipmap/ic_edittextupwd" />
 
         <View
@@ -179,9 +192,9 @@
         android:layout_below="@id/cb_checkbox"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:onClick="onClick"
         android:background="@drawable/login_btn"
         android:gravity="center"
+        android:onClick="onClick"
         android:padding="10dp"
         android:text="登录"
         android:textColor="#fff"

@@ -1,9 +1,10 @@
 package com.example.cms.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -26,9 +27,9 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.cms.R;
-import com.example.cms.adapter.GirdViewCourseAdapter;
-import com.example.cms.adapter.GirdViewStudentAdapter;
-import com.example.cms.adapter.GirdViewTeacherAdapter;
+import com.example.cms.adapter.AdminCourseAdapter;
+import com.example.cms.adapter.AdminStudentAdapter;
+import com.example.cms.adapter.AdminTeacherAdapter;
 import com.example.cms.entity.Course;
 import com.example.cms.entity.Student;
 import com.example.cms.entity.Teacher;
@@ -50,20 +51,21 @@ public class AdminActivity extends AppCompatActivity {
     private RadioButton rb_course;
     private Button add_entity;
 
+    private RecyclerView adminViewDetail;
+    private GridLayoutManager layoutManager;
+
     private List<Student> studentList;
     private List<String> studentNameList;
-    private GirdViewStudentAdapter GirdViewStudentAdapter;
+    private AdminStudentAdapter adminStudentAdapter;
 
     private List<Teacher> teacherList;
     private List<String> teacherNameList;
-    private GirdViewTeacherAdapter girdViewTeacherAdapter;
+    private AdminTeacherAdapter adminTeacherAdapter;
 
     private List<Course> courseList;
     private List<String> courseNameList;
-    private GirdViewCourseAdapter girdViewCourseAdapter;
+    private AdminCourseAdapter adminCourseAdapter;
 
-
-    private GridView gridViewDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,9 @@ public class AdminActivity extends AppCompatActivity {
         rb_teacher = findViewById(R.id.rb_teacher);
         rb_course = findViewById(R.id.rb_course);
         add_entity = findViewById(R.id.add_entity);
+        layoutManager = new GridLayoutManager(this, 2);
+        adminViewDetail = findViewById(R.id.adminViewDetail);
+        adminViewDetail.setLayoutManager(layoutManager);
         rg_entity.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -147,15 +152,8 @@ public class AdminActivity extends AppCompatActivity {
      * 展示学生信息
      **/
     public void setStudent() {
-        GirdViewStudentAdapter = new GirdViewStudentAdapter(this, studentList);
-        gridViewDetail = findViewById(R.id.gridViewDetail);
-        gridViewDetail.setAdapter(GirdViewStudentAdapter);
-        gridViewDetail.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showStudentDialog(position, "edit");
-            }
-        });
+        adminStudentAdapter = new AdminStudentAdapter(this, studentList);
+        adminViewDetail.setAdapter(adminStudentAdapter);
     }
 
     /**
@@ -373,15 +371,8 @@ public class AdminActivity extends AppCompatActivity {
      * 展示教师信息
      **/
     public void setTeacher() {
-        girdViewTeacherAdapter = new GirdViewTeacherAdapter(this, teacherList);
-        gridViewDetail = findViewById(R.id.gridViewDetail);
-        gridViewDetail.setAdapter(girdViewTeacherAdapter);
-        gridViewDetail.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showTeacherDialog(position, "edit");
-            }
-        });
+        adminTeacherAdapter = new AdminTeacherAdapter(this, teacherList);
+        adminViewDetail.setAdapter(adminTeacherAdapter);
     }
 
     /**
@@ -552,15 +543,8 @@ public class AdminActivity extends AppCompatActivity {
      * 展示课程信息
      **/
     public void setCourse() {
-        girdViewCourseAdapter = new GirdViewCourseAdapter(this, courseList);
-        gridViewDetail = findViewById(R.id.gridViewDetail);
-        gridViewDetail.setAdapter(girdViewCourseAdapter);
-        gridViewDetail.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                showCourseDialog(position, "edit");
-            }
-        });
+        adminCourseAdapter = new AdminCourseAdapter(this, courseList);
+        adminViewDetail.setAdapter(adminCourseAdapter);
     }
 
     /**
