@@ -51,6 +51,9 @@ import com.example.cms.util.ScheduleService;
 import com.example.cms.util.ScoreService;
 import com.example.cms.view.SwipeListView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -125,6 +128,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //加载课程表
         fManager = getFragmentManager();
         setFragments(rb_schedule);
+        try {
+            birthdayBlessing();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         getScheduleData(getUserID(), getIdentity());
     }
 
@@ -1038,5 +1046,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //在Activity被关闭后，关闭Service
 //        stopService(intent);
     }
+
+//    <<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<---<<<--- 小功能 --->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>--->>>
+
+    public void birthdayBlessing() throws ParseException {
+        if (getIntent().getBooleanExtra("is_stu", false)) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd");
+            String date = dateFormat.format(new Date());
+            Log.e(TAG, "今天: " + date);
+            String userDate = getIntent().getStringExtra("userDate");
+            String birthday = userDate.substring(5);
+            Log.e(TAG, "生日: " + birthday);
+            if (birthday.equals(date)) {
+                showBirthdayBlessingDialog();
+            }
+        }
+    }
+
+    /**
+     * 展示生日祝福弹窗
+     */
+    public void showBirthdayBlessingDialog() {
+        /* @setIcon 设置对话框图标
+         * @setMessage 设置对话框消息提示
+         */
+        final AlertDialog.Builder normalDialog = new AlertDialog.Builder(MainActivity.this);
+        normalDialog.setIcon(R.mipmap.icon_birthday);
+        normalDialog.setTitle("Happy Birthday !!");
+        normalDialog.setMessage(getIntent().getStringExtra("userName") + "同学，今天是你的生日噢~\n请注意好好休息，不要太疲惫啦\n祝你学业进步，生日快乐！");
+        // 显示
+        normalDialog.show();
+    }
+
 }
 

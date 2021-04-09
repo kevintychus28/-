@@ -30,8 +30,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setTicker("课程提醒")//通知首次出现在通知栏，带上升动画效果的
                 .setWhen(System.currentTimeMillis())//设置推送的发生时间
                 .setSmallIcon(R.mipmap.ic_launcher)//设置推送图标
-                .setContentTitle("推送标题")
-                .setContentText("推送内容")
+                .setContentTitle("嘀嘀嘀！")
+                .setContentText("距离上课时间还剩20分钟~")
 //                .setContentIntent(pendingIntent)//点击跳转到MainActivity
                 .build();
         //发出状态栏通知

@@ -40,14 +40,14 @@ public class AlarmService extends Service {
         //这是课程与当前时间相差的毫秒数
         long diff = d2.getTime() - d1.getTime();
         Log.e(TAG, "课程与当前时间相差: " + diff);
-        AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         //SystemClock.elapsedRealtime()（表示1970年1月1日0点至今所经历的时间）加上当前时间与课程相差时间，再提前了20分钟（1200000毫秒）
         long triggerAtTime = SystemClock.elapsedRealtime() + diff - 1200000 ;
         //此处设置开启AlarmReceiver这个Service
         Intent i = new Intent(this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, i, 0);
         //ELAPSED_REALTIME_WAKEUP表示让定时任务的出发时间从系统开机算起，并且会唤醒CPU。
-        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pendingIntent);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pendingIntent);
         return super.onStartCommand(intent, flags, startId);
     }
 
